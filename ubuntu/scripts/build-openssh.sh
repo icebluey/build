@@ -125,6 +125,10 @@ sleep 1
 awk '$5 >= 3071' etc/ssh/moduli.orig > etc/ssh/moduli
 sleep 1
 chmod 0644 etc/ssh/moduli
+sed 's|^Subsystem[ \t]*sftp|#&|g' -i etc/ssh/sshd_config
+sleep 1
+sed '/^#Subsystem.*sftp/aSubsystem\tsftp\tinternal-sftp' -i etc/ssh/sshd_config
+sleep 1
 cp -pf etc/ssh/sshd_config etc/ssh/sshd_config.default
 ln -svf ssh usr/bin/slogin
 find -L usr/share/man/ -type l -exec rm -f '{}' \;
