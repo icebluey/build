@@ -1,0 +1,77 @@
+# ubuntu 20.04
+
+apt update -y -qqq
+
+apt install -y bash
+sleep 1
+ln -svf bash /bin/sh
+
+ln -svf ../usr/share/zoneinfo/UTC /etc/localtime
+DEBIAN_FRONTEND=noninteractive apt install -y tzdata
+dpkg-reconfigure --frontend noninteractive tzdata
+
+apt install -y binutils coreutils findutils util-linux libc-bin passwd pkg-config
+apt install -y make gcc g++ perl libperl-dev groff-base dpkg-dev cmake
+apt install -y lsof strace sysstat tcpdump
+# compress
+apt install -y zlib1g-dev libzstd-dev liblzma-dev libbz2-dev gzip bzip2 xz-utils
+# tools
+apt install -y libssl-dev openssl ca-certificates wget file sed grep gawk git patch procps iproute2 net-tools iputils-ping
+# build from src
+apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4
+# build openssl 1.1.1
+apt install -y libsctp-dev
+# build nginx
+apt install -y bc uuid-dev libgd-dev libxslt1-dev libxml2-dev libpcre2-dev libpcre3-dev libpng-dev libjpeg-dev
+# build pinentry (gnupg)
+apt install -y libncurses-dev libreadline-dev libldap2-dev libsqlite3-dev libusb-1.0-0-dev libsecret-1-dev
+# build openssh
+apt install -y libedit-dev libssh2-1-dev libpam0g-dev libsystemd-dev groff-base
+# build haproxy
+apt install -y libsystemd-dev libcrypt-dev
+
+# run mysql8-linux-glibc2.17
+apt install -y libncursesw5 libtinfo5 libncurses5
+
+# run keepalived
+apt install -y libnl-3-200 libnl-genl-3-200 libsnmp35 libnftnl11 libsystemd0
+
+# build nettle for gnutls
+apt install -y libgmp-dev
+# build gnutls for chrony
+apt install -y libp11-kit-dev libidn2-dev
+# build chrony
+apt install -y libseccomp-dev libcap-dev
+
+# install gcc 10
+apt install -y gcc-10 g++-10 libstdc++-10-dev cpp-10
+#apt install -y gcc-10-multilib g++-10-multilib
+sleep 1
+ln -svf cpp-10 /usr/bin/x86_64-linux-gnu-cpp
+ln -svf g++-10 /usr/bin/g++
+ln -svf g++-10 /usr/bin/x86_64-linux-gnu-g++
+ln -svf gcc-10 /usr/bin/gcc
+ln -svf gcc-10 /usr/bin/x86_64-linux-gnu-gcc
+ln -svf gcc-ar-10 /usr/bin/gcc-ar
+ln -svf gcc-ar-10 /usr/bin/x86_64-linux-gnu-gcc-ar
+ln -svf gcc-nm-10 /usr/bin/gcc-nm
+ln -svf gcc-nm-10 /usr/bin/x86_64-linux-gnu-gcc-nm
+ln -svf gcc-ranlib-10 /usr/bin/gcc-ranlib
+ln -svf gcc-ranlib-10 /usr/bin/x86_64-linux-gnu-gcc-ranlib
+ln -svf gcov-10 /usr/bin/gcov
+ln -svf gcov-10 /usr/bin/x86_64-linux-gnu-gcov
+ln -svf gcov-dump-10 /usr/bin/gcov-dump
+ln -svf gcov-dump-10 /usr/bin/x86_64-linux-gnu-gcov-dump
+ln -svf gcov-tool-10 /usr/bin/gcov-tool
+ln -svf gcov-tool-10 /usr/bin/x86_64-linux-gnu-gcov-tool
+
+apt upgrade -y
+/sbin/ldconfig
+
+exit
+
+# libxslt1.1 libgd3 libglib2.0-0 libldap-2.4-2 libreadline8 libsecret-1-0 libsqlite3-0 libusb-1.0-0 libxml2 libperl5.30 
+
+# nginx links
+# libbsd0 libc6 libcrypt1 libexpat1 libfontconfig1 libfreetype6 libgcc-s1 libgcrypt20 libgd3 libgpg-error0 libicu66 libjbig0 libjpeg-turbo8 liblzma5 libperl5.30 libpng16-16 libstdc++6 libtiff5 libuuid1 libwebp6 libx11-6 libxau6 libxcb1 libxdmcp6 libxml2 libxpm4 libxslt1.1 libzstd1 zlib1g
+
