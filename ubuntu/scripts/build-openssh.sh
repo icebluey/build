@@ -74,7 +74,6 @@ sed 's|^#PermitRootLogin .*|PermitRootLogin no|' -i sshd_config
 --with-pam \
 --with-libedit=/usr \
 --with-zlib \
---with-md5-passwords \
 --with-ipaddr-display \
 --with-systemd \
 --build=x86_64-linux-gnu \
