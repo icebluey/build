@@ -14,28 +14,24 @@ _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
 
 _lua_ver="$(wget -qO- 'https://www.lua.org/ftp/' | grep -i '<a href' | sed 's/"/ /g' | sed 's/ /\n/g' | grep -i '^lua-[1-9].*\.tar\.gz$' | sed -e 's|lua-||g' -e 's|\.tar.*||g' | sort -V | tail -n 1)"
-_pcre2_ver="$(wget -qO- 'https://ftp.pcre.org/pub/pcre/' | grep ' href="' | sed 's/"/ /g; s/\// /g' | sed 's/ /\n/g' | grep -E -i '\.tar\.xz$|\.tar\.gz$|\.tar\.bz2$' | sed -e '/alpha/d' -e '/beta/d' -e '/rc/d' -e '/latest/d' -e '/\.zip/d' | grep -i '^pcre2-' | sed -e 's|pcre2-||g' -e 's|\.tar.*||g' | sort -V | tail -n 1)"
+_pcre2_ver="$(wget -qO- 'https://github.com/PhilipHazel/pcre2/releases' | grep -i 'pcre2-.*.tar.bz2' | sed 's|"|\n|g' | grep -i '^/PhilipHazel/pcre2/releases/download' | sed 's|.*/pcre2-||g' | sed 's|\.tar.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
 _ssl_ver="$(wget -qO- 'https://www.openssl.org/source/' | grep '1.1.1' | sed 's/">/ /g' | sed 's/<\/a>/ /g' | awk '{print $3}' | grep '\.tar.gz' | sed -e 's|openssl-||g' -e 's|\.tar.*||g' | sort -V | tail -n 1)"
 _haproxy_path="$(wget -qO- 'https://www.haproxy.org/' | grep -i 'src/haproxy-' | sed 's/"/\n/g' | grep '^/download/' | grep -i '\.gz$' | sort -V | uniq | tail -n 1)"
 _haproxy_ver=$(echo ${_haproxy_path} | sed 's|/|\n|g' | grep '^haproxy-[1-9]' | sed -e 's|haproxy-||g' -e 's|\.tar.*||g')
 
 wget -c -t 0 -T 9 "https://www.zlib.net/zlib-1.2.11.tar.xz"
 wget -c -t 0 -T 9 "https://www.lua.org/ftp/lua-${_lua_ver}.tar.gz"
-wget -c -t 0 -T 9 "https://ftp.pcre.org/pub/pcre/pcre2-${_pcre2_ver}.tar.gz"
+wget -c -t 0 -T 9 "https://github.com/PhilipHazel/pcre2/releases/download/pcre2-${_pcre2_ver}/pcre2-${_pcre2_ver}.tar.bz2"
 wget -c -t 0 -T 9 "https://www.openssl.org/source/openssl-${_ssl_ver}.tar.gz"
 wget -c -t 0 -T 9 "https://www.haproxy.org${_haproxy_path}"
 
 tar -xf zlib-1.2.11.tar.xz
 tar -xf "lua-${_lua_ver}.tar.gz"
-tar -xf "pcre2-${_pcre2_ver}.tar.gz"
+tar -xf "pcre2-${_pcre2_ver}.tar.bz2"
 tar -xf "openssl-${_ssl_ver}.tar.gz"
 tar -xf "haproxy-${_haproxy_ver}.tar.gz"
 sleep 1
-rm -vf zlib-1.2.11.tar.xz
-rm -vf "lua-${_lua_ver}.tar.gz"
-rm -vf "pcre2-${_pcre2_ver}.tar.gz"
-rm -vf "openssl-${_ssl_ver}.tar.gz"
-rm -vf "haproxy-${_haproxy_ver}.tar.gz"
+rm -vf *.tar*
 
 cd zlib-1.2.11
 ./configure --64 --static --prefix=/tmp/zlib
