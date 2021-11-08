@@ -33,13 +33,15 @@ cd /tmp/nginx.tmp/build-nginx/
 # Zlib
 wget -c 'https://zlib.net/zlib-1.2.11.tar.xz'
 tar -xf  zlib-*.tar.xz
+sleep 2
 rm -fr zlib-*.tar*
 mv -v zlib-* zlib
 
 # PCRE
-lastbz2=$(wget -qO- 'https://ftp.pcre.org/pub/pcre/' | grep '<a href="' | grep 'pcre-' | sed 's/"/ /g' | sed 's/ /\n/g' | grep '^pcre-' | sed -n '/bz2$/p' | sort -V | uniq | tail -n 1)
-wget -c "https://ftp.pcre.org/pub/pcre/${lastbz2}"
-tar -xf pcre-*.tar.bz2
+_pcre_ver="$(wget -qO- 'https://sourceforge.net/projects/pcre/files/pcre/' | grep -i 'href="/projects/pcre/files/pcre/[1-9]' | sed 's|"|\n|g' | grep -i '^/projects/pcre/files/pcre/' | sed 's|.*pcre/||g' | sed 's|/.*||g' | sort -V | uniq | tail -n 1)"
+wget -c "https://cfhcable.dl.sourceforge.net/project/pcre/pcre/${_pcre_ver}/pcre-${_pcre_ver}.tar.bz2"
+tar -xf "pcre-${_pcre_ver}.tar.bz2"
+sleep 2
 rm -fr pcre-*.tar*
 mv -v pcre-* pcre
 
@@ -47,6 +49,7 @@ mv -v pcre-* pcre
 latest_targz=$(wget -qO- 'https://www.openssl.org/source/' | grep '1.1.1' | sed 's/">/ /g' | sed 's/<\/a>/ /g' | awk '{print $3}' | grep '.tar.gz' | head -n 1)
 wget -c -t 0 -T 9 "https://www.openssl.org/source/${latest_targz}"
 tar -zxf ${latest_targz}
+sleep 2
 rm -fr openssl-*gz
 mv -v openssl-* openssl
 
