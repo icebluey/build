@@ -2,6 +2,8 @@
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='UTC'; export TZ
 
+/sbin/ldconfig
+
 find /lib/modules/"$(ls -1 /lib/modules/ | sort -V | tail -n 1)"/ -iname "*.ko" -exec /usr/bin/xz -f -z -7 "{}" \;
 sleep 2
 rm -f /lib/modules/"$(ls -1 /lib/modules/ | sort -V | tail -n 1)"/modules.dep
