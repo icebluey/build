@@ -257,21 +257,21 @@ ntpservers=(
 '\''nts.sth2.ntp.se'\''
 )
 if [[ -f /usr/bin/dig ]]; then
-    sleep 1
+    sleep 2
     for server in "${ntpservers[@]}"; do
         /usr/bin/dig \
         +timeout=1 +tries=1 \
         "${server}" AAAA \
         >/dev/null 2>&1 & 
     done
-    sleep 1
+    sleep 2
     for server in "${ntpservers[@]}"; do
         /usr/bin/dig \
         +timeout=1 +tries=1 \
         "${server}" A \
         >/dev/null 2>&1 & 
     done
-    sleep 1
+    sleep 2
 fi
 ntpservers='\'''\''
 exit 0
