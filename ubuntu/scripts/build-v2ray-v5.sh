@@ -30,10 +30,10 @@ export GOBIN="$GOROOT/bin"
 export PATH="$GOROOT/bin:$PATH"
 alias go="$GOROOT/bin/go"
 alias gofmt="$GOROOT/bin/gofmt"
+rm -fr ~/.cache/go-build
 echo
 go version
 echo
-rm -fr ~/.cache/go-build
 
 set -e
 
