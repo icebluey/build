@@ -62,7 +62,8 @@ sed "/AppVersion .*=/s|beta.*|git${_commit_id}\"|g" -i dnscrypt-proxy/main.go
 rm -fr .git
 cd dnscrypt-proxy
 
-export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+#export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+export GOFLAGS="-trimpath -mod=readonly -modcacherw"
 env CGO_ENABLED=0 go build -o "dnscrypt-proxy" -ldflags "-s -w"
 
 echo
