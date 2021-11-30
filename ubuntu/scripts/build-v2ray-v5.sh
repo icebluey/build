@@ -59,7 +59,7 @@ mkdir -p /tmp/v2ray/etc/v2ray
 mkdir -p /tmp/v2ray/usr/bin
 
 cd main
-CGO_ENABLED=0 go build -o /tmp/v2ray/usr/bin/v2ray -ldflags "-s -w" -buildmode=pie -trimpath
+CGO_ENABLED=0 go build -o /tmp/v2ray/usr/bin/v2ray -ldflags "-s -w" -trimpath
 
 echo
 ###############################################################################
