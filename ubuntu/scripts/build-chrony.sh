@@ -250,22 +250,22 @@ echo '#!/usr/bin/env bash
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='\''UTC'\''; export TZ
 
-ntpservers=(
+_ntpservers=(
 '\''time.cloudflare.com'\''
 '\''nts.ntp.se'\''
 '\''nts.sth1.ntp.se'\''
 '\''nts.sth2.ntp.se'\''
 )
 if [[ -f /usr/bin/dig ]]; then
-    sleep 2
-    for server in "${ntpservers[@]}"; do
+    sleep 1
+    for server in "${_ntpservers[@]}"; do
         /usr/bin/dig \
         +timeout=1 +tries=1 \
         "${server}" AAAA \
         >/dev/null 2>&1 & 
     done
     sleep 2
-    for server in "${ntpservers[@]}"; do
+    for server in "${_ntpservers[@]}"; do
         /usr/bin/dig \
         +timeout=1 +tries=1 \
         "${server}" A \
@@ -273,7 +273,7 @@ if [[ -f /usr/bin/dig ]]; then
     done
     sleep 2
 fi
-ntpservers='\'''\''
+_ntpservers='\'''\''
 exit 0
 ' > usr/libexec/chrony/resolve-ntp-servers.sh
 sleep 1
