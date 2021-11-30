@@ -30,17 +30,15 @@ export GOBIN="$GOROOT/bin"
 export PATH="$GOROOT/bin:$PATH"
 alias go="$GOROOT/bin/go"
 alias gofmt="$GOROOT/bin/gofmt"
+rm -fr ~/.cache/go-build
+echo
+go version
+echo
 
 #export CFLAGS="-I/usr/local/openssl-1.1.1/include"
 export CPPFLAGS="-I/usr/local/openssl-1.1.1/include"
 export LDFLAGS="-L/usr/local/openssl-1.1.1/lib"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/openssl-1.1.1/lib
-
-echo
-go version
-echo
-
-rm -fr ~/.cache/go-build
 
 set -e
 
