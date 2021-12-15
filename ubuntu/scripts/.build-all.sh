@@ -9,6 +9,8 @@ starttime="$(echo ' Start Time:  '"$(date -ud @"${_start_epoch}")")"
 echo " ${starttime}"
 
 /sbin/ldconfig
+
+rm -fr /tmp/*
 rm -fr /tmp/.tar.tmp*
 rm -fr /tmp/bintar*
 rm -fr /tmp/.done.txt
@@ -16,7 +18,13 @@ rm -fr /tmp/.done.txt
 set -e
 
 bash pre-install.txt
+
+rm -fr /usr/local/openssl-1.1.1
+sleep 1
+/sbin/ldconfig
 bash build-ssl-1.1.1.sh
+rm -fr /usr/local/openssl-1.1.1
+sleep 2
 tar -xf /tmp/openssl_*_amd64.tar.xz -C /
 bash /usr/local/openssl-1.1.1/.install.txt
 /sbin/ldconfig
