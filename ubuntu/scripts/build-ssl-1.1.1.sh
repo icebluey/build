@@ -2,6 +2,13 @@
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='UTC'; export TZ
 
+CC=gcc
+export CC
+CXX=g++
+export CXX
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/local/openssl-1.1.1/lib"
+export LDFLAGS
+
 /sbin/ldconfig
 
 set -e
