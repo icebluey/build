@@ -8,6 +8,9 @@ CC=gcc
 export CC
 CXX=g++
 export CXX
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/local/openssl-1.1.1/lib"
+export LDFLAGS
+
 /sbin/ldconfig
 
 set -e
@@ -212,15 +215,16 @@ usr/bin/ssh-keygen -q -t ecdsa -b 521 -E sha512 -f etc/ssh/ssh_host_ecdsa_key -N
 usr/bin/ssh-keygen -q -t ed25519 -E sha512 -f etc/ssh/ssh_host_ed25519_key -N "" -C ""
 
 rm -fr var/run
+rm -fr run
 echo
 sleep 2
 tar -Jcvf /tmp/"openssh_${_ssh_ver}-1_amd64.tar.xz" *
 echo
 sleep 2
-rm -fr /tmp/openssh
 
 cd /tmp
 rm -fr "${_tmp_dir}"
+rm -fr /tmp/openssh
 sleep 2
 echo
 echo ' build openssh done'
