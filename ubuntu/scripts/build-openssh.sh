@@ -43,12 +43,14 @@ rm -vf config.guess~
 rm -vf config.sub~
 rm -vf install-sh~
 rm -vf configure.ac.orig
+rm -vf sshd.c.orig
 autoreconf -v -f -i
 rm -fr autom4te.cache
 rm -vf config.guess~
 rm -vf config.sub~
 rm -vf install-sh~
 rm -vf configure.ac.orig
+rm -vf sshd.c.orig
 sleep 1
 
 userdel -f -r ssh >/dev/null 2>&1 || : 
