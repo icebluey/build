@@ -42,7 +42,8 @@ cd "nettle-${_nettle_ver}"
 
 ./configure \
 --build=x86_64-linux-gnu --host=x86_64-linux-gnu \
---prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --includedir=/usr/include --sysconfdir=/etc
+--prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
+--includedir=/usr/include --sysconfdir=/etc \
 --enable-shared --enable-static --enable-fat
 
 make all
