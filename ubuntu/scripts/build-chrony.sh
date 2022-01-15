@@ -19,10 +19,13 @@ export CXX
 set -e
 
 _build_nettle () {
+
 CC=gcc
 export CC
 CXX=g++
 export CXX
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now"
+export LDFLAGS
 /sbin/ldconfig
 
 set -e
@@ -39,8 +42,9 @@ cd "nettle-${_nettle_ver}"
 
 ./configure \
 --build=x86_64-linux-gnu --host=x86_64-linux-gnu \
---enable-shared --enable-static \
 --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --includedir=/usr/include --sysconfdir=/etc
+--enable-shared --enable-static --enable-fat
+
 make all
 rm -fr /tmp/nettle
 make install DESTDIR=/tmp/nettle
@@ -84,10 +88,13 @@ echo
 }
 
 _build_gnutls () {
+
 CC=gcc
 export CC
 CXX=g++
 export CXX
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private"
+export LDFLAGS
 /sbin/ldconfig
 
 set -e
@@ -103,7 +110,6 @@ rm -f "gnutls-${_gnutls_ver}.tar.xz"
 cd "gnutls-${_gnutls_ver}"
 
 ./configure \
-LDFLAGS="-Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private" \
 --build=x86_64-linux-gnu \
 --host=x86_64-linux-gnu \
 --enable-shared \
@@ -158,10 +164,13 @@ echo
 }
 
 _build_chrony () {
+
 CC=gcc
 export CC
 CXX=g++
 export CXX
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private"
+export LDFLAGS
 /sbin/ldconfig
 
 set -e
@@ -176,8 +185,6 @@ sleep 2
 rm -f "chrony-${_chrony_ver}.tar.gz"
 cd "chrony-${_chrony_ver}"
 
-CC='gcc -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private' \
-CXX='g++ -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private' \
 ./configure \
 --prefix=/usr \
 --mandir=/usr/share/man \
@@ -222,9 +229,13 @@ mkdir -p usr/lib/x86_64-linux-gnu/chrony
 sleep 1
 cp -a /usr/lib/x86_64-linux-gnu/chrony/private usr/lib/x86_64-linux-gnu/chrony/
 
-sed -e 's|#\(keyfile\)|\1|' \
+sed -e 's|#\(driftfile\)|\1|' \
+-e 's|#\(rtcsync\)|\1|' \
+-e 's|#\(keyfile\)|\1|' \
 -e 's|#\(leapsectz\)|\1|' \
+-e 's|#\(logdir\)|\1|' \
 -e 's|#\(authselectmode\)|\1|' \
+-e 's|#\(ntsdumpdir\)|\1|' \
 -i etc/chrony/chrony.conf
 
 sed 's|/etc/chrony\.|/etc/chrony/chrony\.|g' -i etc/chrony/chrony.conf
