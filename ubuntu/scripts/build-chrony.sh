@@ -8,7 +8,7 @@ apt install -y libgmp-dev
 # build gnutls for chrony
 apt install -y libp11-kit-dev libidn2-dev
 # build chrony
-apt install -y libseccomp-dev libcap-dev
+apt install -y libseccomp-dev libcap-dev libedit-dev
 
 CC=gcc
 export CC
@@ -24,7 +24,7 @@ CC=gcc
 export CC
 CXX=g++
 export CXX
-LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now"
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private"
 export LDFLAGS
 /sbin/ldconfig
 
@@ -49,6 +49,7 @@ cd "nettle-${_nettle_ver}"
 make all
 rm -fr /tmp/nettle
 make install DESTDIR=/tmp/nettle
+
 cd /tmp/nettle
 if [[ -d usr/share/man ]]; then
     find -L usr/share/man/ -type l -exec rm -f '{}' \;
@@ -80,11 +81,11 @@ rm -fr /tmp/nettle
 
 cd /tmp
 rm -fr "${_tmp_dir}"
+/sbin/ldconfig
 sleep 2
 echo
 echo ' done'
 echo
-/sbin/ldconfig
 
 }
 
@@ -129,13 +130,16 @@ cd "gnutls-${_gnutls_ver}"
 make all
 rm -fr /tmp/gnutls
 make install DESTDIR=/tmp/gnutls
+
 cd /tmp/gnutls
-find -L usr/share/man/ -type l -exec rm -f '{}' \;
-find usr/share/man/ -type f -iname '*.[1-9]' -exec gzip -f -9 '{}' \;
-sleep 2
-find -L usr/share/man/ -type l | while read file; do ln -svf "$(readlink -s "${file}").gz" "${file}.gz" ; done
-sleep 2
-find -L usr/share/man/ -type l -exec rm -f '{}' \;
+if [[ -d usr/share/man ]]; then
+    find -L usr/share/man/ -type l -exec rm -f '{}' \;
+    find usr/share/man/ -type f -iname '*.[1-9]' -exec gzip -f -9 '{}' \;
+    sleep 2
+    find -L usr/share/man/ -type l | while read file; do ln -svf "$(readlink -s "${file}").gz" "${file}.gz" ; done
+    sleep 2
+    find -L usr/share/man/ -type l -exec rm -f '{}' \;
+fi
 find usr/lib/x86_64-linux-gnu/ -type f -iname '*.so.*' -exec chmod 0755 '{}' \;
 sleep 2
 find usr/bin/ -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
@@ -156,11 +160,11 @@ rm -fr /tmp/gnutls
 
 cd /tmp
 rm -fr "${_tmp_dir}"
+/sbin/ldconfig
 sleep 2
 echo
 echo ' done'
 echo
-/sbin/ldconfig
 
 }
 
@@ -209,6 +213,7 @@ install -v -c -m 0640 chrony.keys.example /tmp/chrony/etc/chrony/chrony.keys
 install -v -c -m 0644 chrony.logrotate /tmp/chrony/etc/logrotate.d/chrony
 install -v -c -m 0644 chrony-wait.service /tmp/chrony/etc/chrony/chrony-wait.service
 install -v -c -m 0644 chronyd.service /tmp/chrony/etc/chrony/chronyd.service
+
 cd /tmp/chrony
 rm -fr var/run
 install -m 0755 -d etc/sysconfig
@@ -325,11 +330,11 @@ rm -fr /tmp/chrony
 
 cd /tmp
 rm -fr "${_tmp_dir}"
+/sbin/ldconfig
 sleep 2
 echo
 echo ' done'
 echo
-/sbin/ldconfig
 
 }
 
@@ -342,11 +347,11 @@ _build_chrony
 rm -f /tmp/nettle*.tar*
 rm -f /tmp/gnutls*.tar*
 
+/sbin/ldconfig
 sleep 2
 echo
 echo ' build chrony done'
 echo ' build chrony done' >> /tmp/.done.txt
 echo
-/sbin/ldconfig
 exit
 
