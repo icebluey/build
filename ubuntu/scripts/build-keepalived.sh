@@ -91,7 +91,7 @@ rm -fr "keepalived-${_keepalived_ver}"
 cd /tmp/keepalived
 mkdir -p var/log/keepalived
 mkdir -p usr/libexec/keepalived
-mv -f etc/keepalived/keepalived.conf etc/keepalived/keepalived.conf.default
+[[ -f etc/keepalived/keepalived.conf ]] && mv -f etc/keepalived/keepalived.conf etc/keepalived/keepalived.conf.default
 mv -f etc/keepalived/samples usr/share/doc/keepalived/
 mkdir -p usr/lib/x86_64-linux-gnu/keepalived/private
 cp -a /tmp/openssl/usr/lib/x86_64-linux-gnu/lib*.so* usr/lib/x86_64-linux-gnu/keepalived/private/
