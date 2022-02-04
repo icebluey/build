@@ -28,12 +28,17 @@ set -e
 
 cd /tmp/buildall.tmp/build
 
-ls -1 ../src/* | xargs -I "{}" tar -xf "{}"
+ls -1 ../src/* | xargs --no-run-if-empty -I "{}" tar -xf "{}"
 ##################################################
 
 cd build-nginx/nginx/
 
 /bin/ls -la --color 
+
+CFLAGS='-O2 -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -fstack-protector-strong -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection'
+export CFLAGS
+CXXFLAGS='-O2 -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -fstack-protector-strong -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection'
+export CXXFLAGS
 
 LDFLAGS='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now'
 export LDFLAGS
@@ -112,12 +117,12 @@ ${_stream_module_args} \
 --add-module=../modules/ngx_http_geoip2_module \
 --add-module=../modules/ngx_http_headers_more_filter_module \
 --add-module=../modules/ngx_http_memc_module \
---add-module=../modules/ngx_http_naxsi_module/naxsi_src \
 --add-module=../modules/ngx_http_redis2_module \
 --add-module=../modules/ngx_http_substitutions_filter_module \
 --add-module=../modules/ngx_pagespeed \
 --add-module=../modules/ngx_rtmp_module 
 
+#--add-module=../modules/ngx_http_naxsi_module/naxsi_src \
 
 make -j1
 
