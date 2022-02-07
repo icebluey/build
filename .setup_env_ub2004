@@ -54,9 +54,9 @@ _setup_env_ub2004() {
     echo
     printf '\e[01;32m%s\e[m\n' '  Setup Ubuntu 20.04 env completed'
     echo
-    apt clean
+    apt clean >/dev/null 2>&1 || : 
     sleep 2
-    apt autoclean
+    apt autoclean >/dev/null 2>&1 || : 
     rm -fr /var/lib/apt/lists/*
     rm -fr /var/cache/apt/archives/*
 }
