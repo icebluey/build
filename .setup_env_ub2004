@@ -1,1 +1,60 @@
 
+_setup_env_ub2004() {
+    /sbin/ldconfig
+    set -e
+    _tmp_dir="$(mktemp -d)"
+    cd "${_tmp_dir}"
+    apt update -y -qqq
+    apt install -y bash
+    ln -svf bash /bin/sh
+    ln -svf ../usr/share/zoneinfo/UTC /etc/localtime
+    DEBIAN_FRONTEND=noninteractive apt install -y tzdata
+    dpkg-reconfigure --frontend noninteractive tzdata
+    apt install -y wget ca-certificates git
+    apt install -y binutils coreutils findutils util-linux diffutils gzip bzip2 xz-utils tar
+    wget "https://github.com/icebluey/build/releases/download/v2022-02-04/bintar-20.04.tar.xz"
+    tar -xf bintar-20.04.tar.xz
+    cd bintar-20.04
+    bash requirements.txt
+    systemctl disable ssh >/dev/null 2>&1 || : 
+    systemctl disable sshd >/dev/null 2>&1 || : 
+    systemctl disable ssh.socket >/dev/null 2>&1 || : 
+    systemctl disable sshd-keygen.service >/dev/null 2>&1 || : 
+    systemctl disable ssh-agent.service >/dev/null 2>&1 || : 
+    systemctl stop ssh >/dev/null 2>&1 || : 
+    systemctl stop sshd >/dev/null 2>&1 || : 
+    systemctl stop ssh.socket >/dev/null 2>&1 || : 
+    systemctl stop sshd-keygen.service >/dev/null 2>&1 || : 
+    systemctl stop ssh-agent.service >/dev/null 2>&1 || : 
+    systemctl stop chrony >/dev/null 2>&1 || : 
+    systemctl disable chrony >/dev/null 2>&1 || : 
+    systemctl stop dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
+    systemctl disable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
+    rm -fr /etc/ssh /etc/dnscrypt-proxy /usr/local/openssl-1.1.1 /etc/gnupg
+    rm -fr /usr/lib/x86_64-linux-gnu/chrony /var/lib/chrony /etc/chrony*
+    /bin/ls -1 *.tar.xz | xargs --no-run-if-empty -I '{}' tar -xf '{}' -C /
+    bash /usr/local/openssl-1.1.1/.install.txt
+    bash /etc/ssh/.install.txt
+    bash /etc/dnscrypt-proxy/.install.txt
+    bash /etc/gnupg/.install.txt
+    bash /etc/chrony/.install.txt
+    systemctl stop systemd-timesyncd >/dev/null 2>&1 || : 
+    systemctl disable systemd-timesyncd >/dev/null 2>&1 || : 
+    systemctl disable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
+    systemctl enable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
+    systemctl start dnscrypt-proxy.service >/dev/null 2>&1 || : 
+    if grep -q -i '^1:name=systemd:/system.slice/docker' /proc/1/cgroup 2>/dev/null; then
+        echo 'nameserver 8.8.8.8' > /etc/resolv.conf
+    fi
+    systemctl start chronyd.service >/dev/null 2>&1 || : 
+    cd /tmp
+    sleep 1
+    rm -fr "${_tmp_dir}"
+    /sbin/ldconfig
+    echo
+    printf '\e[01;32m%s\e[m\n' '  Setup Ubuntu 20.04 env completed'
+    echo
+}
+
+_setup_env_ub2004
+
