@@ -47,6 +47,9 @@ _setup_env_ub2004() {
     systemctl enable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
     systemctl start dnscrypt-proxy.service >/dev/null 2>&1 || : 
     systemctl start chronyd.service >/dev/null 2>&1 || : 
+    bash .config/holdback.txt
+    sleep 2
+    bash .config/clean-apt.sh
     cd /tmp
     sleep 1
     rm -fr "${_tmp_dir}"
@@ -54,11 +57,6 @@ _setup_env_ub2004() {
     echo
     printf '\e[01;32m%s\e[m\n' '  Setup Ubuntu 20.04 env completed'
     echo
-    apt clean >/dev/null 2>&1 || : 
-    sleep 2
-    apt autoclean >/dev/null 2>&1 || : 
-    rm -fr /var/lib/apt/lists/*
-    rm -fr /var/cache/apt/archives/*
 }
 
 _setup_env_ub2004
