@@ -12,7 +12,7 @@ dpkg-reconfigure --frontend noninteractive tzdata
 
 apt install -y binutils coreutils findutils util-linux diffutils libc-bin passwd pkg-config patch groff-base
 apt install -y zlib1g-dev libzstd-dev liblzma-dev libbz2-dev gzip bzip2 xz-utils
-apt install -y wget ca-certificates file sed grep gawk git patch procps iproute2 net-tools iputils-ping libssl-dev openssl
+apt install -y wget ca-certificates git libssl-dev openssl file sed grep gawk patch procps iproute2 net-tools iputils-ping
 apt install -y lsof strace sysstat tcpdump
 apt install -y make gcc g++ perl libperl-dev groff-base dpkg-dev cmake m4
 # build from src
