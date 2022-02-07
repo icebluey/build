@@ -33,6 +33,7 @@ _setup_env_ub2004() {
     rm -fr /etc/ssh /etc/dnscrypt-proxy /usr/local/openssl-1.1.1 /etc/gnupg
     rm -fr /usr/lib/x86_64-linux-gnu/chrony /var/lib/chrony /etc/chrony*
     /bin/ls -1 *.tar.xz | xargs --no-run-if-empty -I '{}' tar -xf '{}' -C /
+    systemctl daemon-reload >/dev/null 2>&1 || : 
     bash /usr/local/openssl-1.1.1/.install.txt
     bash /etc/ssh/.install.txt
     bash /etc/dnscrypt-proxy/.install.txt
@@ -41,12 +42,19 @@ _setup_env_ub2004() {
     fi
     bash /etc/gnupg/.install.txt
     bash /etc/chrony/.install.txt
+    systemctl daemon-reload >/dev/null 2>&1 || : 
     systemctl stop systemd-timesyncd >/dev/null 2>&1 || : 
     systemctl disable systemd-timesyncd >/dev/null 2>&1 || : 
     systemctl disable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
     systemctl enable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
     systemctl start dnscrypt-proxy.service >/dev/null 2>&1 || : 
     systemctl start chronyd.service >/dev/null 2>&1 || : 
+
+    # OpenSSH
+    cat /etc/ssh/ssh-hardening-options.txt >> /etc/ssh/sshd_config
+    cat /etc/ssh/ssh-hardening-options.txt >> /etc/ssh/ssh_config
+    systemctl start sshd.service >/dev/null 2>&1 || : 
+
     bash .config/holdback.txt
     sleep 2
     bash .config/clean-apt.sh
