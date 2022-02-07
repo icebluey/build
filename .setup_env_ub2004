@@ -36,6 +36,9 @@ _setup_env_ub2004() {
     bash /usr/local/openssl-1.1.1/.install.txt
     bash /etc/ssh/.install.txt
     bash /etc/dnscrypt-proxy/.install.txt
+    if grep -q -i '^1:name=systemd:/system.slice/docker' /proc/1/cgroup 2>/dev/null; then
+        echo 'nameserver 8.8.8.8' > /etc/resolv.conf
+    fi
     bash /etc/gnupg/.install.txt
     bash /etc/chrony/.install.txt
     systemctl stop systemd-timesyncd >/dev/null 2>&1 || : 
@@ -43,9 +46,6 @@ _setup_env_ub2004() {
     systemctl disable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
     systemctl enable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
     systemctl start dnscrypt-proxy.service >/dev/null 2>&1 || : 
-    if grep -q -i '^1:name=systemd:/system.slice/docker' /proc/1/cgroup 2>/dev/null; then
-        echo 'nameserver 8.8.8.8' > /etc/resolv.conf
-    fi
     systemctl start chronyd.service >/dev/null 2>&1 || : 
     cd /tmp
     sleep 1
@@ -54,6 +54,11 @@ _setup_env_ub2004() {
     echo
     printf '\e[01;32m%s\e[m\n' '  Setup Ubuntu 20.04 env completed'
     echo
+    apt clean
+    sleep 2
+    apt autoclean
+    rm -fr /var/lib/apt/lists/*
+    rm -fr /var/cache/apt/archives/*
 }
 
 _setup_env_ub2004
