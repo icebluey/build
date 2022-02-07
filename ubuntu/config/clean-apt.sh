@@ -2,8 +2,8 @@
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='UTC'; export TZ
 
-[ -f /etc/apt/apt.conf.d/20auto-upgrades ] && sed 's/APT::Periodic::Update-Package-Lists "[0-9]";/APT::Periodic::Update-Package-Lists "0";/g' -i /etc/apt/apt.conf.d/20auto-upgrades
-[ -f /etc/apt/apt.conf.d/20auto-upgrades ] && sed 's/APT::Periodic::Unattended-Upgrade "[0-9].*/APT::Periodic::Unattended-Upgrade "0";/g' -i /etc/apt/apt.conf.d/20auto-upgrades
+#[ -f /etc/apt/apt.conf.d/20auto-upgrades ] && sed 's/APT::Periodic::Update-Package-Lists "[0-9]";/APT::Periodic::Update-Package-Lists "0";/g' -i /etc/apt/apt.conf.d/20auto-upgrades
+#[ -f /etc/apt/apt.conf.d/20auto-upgrades ] && sed 's/APT::Periodic::Unattended-Upgrade "[0-9].*/APT::Periodic::Unattended-Upgrade "0";/g' -i /etc/apt/apt.conf.d/20auto-upgrades
 
 apt-get clean
 apt-get autoclean
