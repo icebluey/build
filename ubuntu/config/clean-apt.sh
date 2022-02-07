@@ -4,6 +4,7 @@ TZ='UTC'; export TZ
 
 umask 022
 
+## Disable auto upgrade
 #[ -f /etc/apt/apt.conf.d/20auto-upgrades ] && sed 's/APT::Periodic::Update-Package-Lists "[0-9]";/APT::Periodic::Update-Package-Lists "0";/g' -i /etc/apt/apt.conf.d/20auto-upgrades
 #[ -f /etc/apt/apt.conf.d/20auto-upgrades ] && sed 's/APT::Periodic::Unattended-Upgrade "[0-9].*/APT::Periodic::Unattended-Upgrade "0";/g' -i /etc/apt/apt.conf.d/20auto-upgrades
 
