@@ -2,6 +2,8 @@
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='UTC'; export TZ
 
+umask 022
+
 /sbin/ldconfig
 
 rm -fr /tmp/*el7.x86_64.tar.xz
@@ -59,7 +61,7 @@ export LDFLAGS
 
 _vmajor=4
 _vminor=6
-_vpatch=2
+_vpatch=3
 
 _longver=$(printf "%1d%03d%03d" ${_vmajor} ${_vminor} ${_vpatch})
 _fullver="$(echo \"${_vmajor}\.${_vminor}\.${_vpatch}\")"
