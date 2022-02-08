@@ -5,13 +5,12 @@ _setup_env_ub2004() {
     _tmp_dir="$(mktemp -d)"
     cd "${_tmp_dir}"
     apt update -y -qqq
-    apt install -y bash
-    ln -svf bash /bin/sh
     ln -svf ../usr/share/zoneinfo/UTC /etc/localtime
     DEBIAN_FRONTEND=noninteractive apt install -y tzdata
     dpkg-reconfigure --frontend noninteractive tzdata
-    apt install -y wget ca-certificates git
-    apt install -y binutils coreutils findutils util-linux diffutils patch gzip bzip2 xz-utils tar
+    apt install -y bash wget ca-certificates git
+    ln -svf bash /bin/sh
+    apt install -y binutils coreutils findutils util-linux diffutils patch sed gawk grep file gzip bzip2 xz-utils tar
     wget -c -t 9 -T 9 "https://github.com/icebluey/build/releases/download/v2022-02-08/bintar-20.04.tar.xz"
     tar -xf bintar-20.04.tar.xz
     cd bintar-20.04
@@ -56,8 +55,6 @@ _setup_env_ub2004() {
     systemctl start sshd.service >/dev/null 2>&1 || : 
 
     bash .config/holdback.txt
-    sleep 2
-    bash .config/clean-apt.sh
     cd /tmp
     sleep 1
     rm -fr "${_tmp_dir}"
