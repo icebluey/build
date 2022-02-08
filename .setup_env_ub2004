@@ -12,7 +12,7 @@ _setup_env_ub2004() {
     dpkg-reconfigure --frontend noninteractive tzdata
     apt install -y wget ca-certificates git
     apt install -y binutils coreutils findutils util-linux diffutils gzip bzip2 xz-utils tar
-    wget "https://github.com/icebluey/build/releases/download/v2022-02-04/bintar-20.04.tar.xz"
+    wget -c -t 9 -T 9 "https://github.com/icebluey/build/releases/download/v2022-02-08/bintar-20.04.tar.xz"
     tar -xf bintar-20.04.tar.xz
     cd bintar-20.04
     bash requirements.txt
