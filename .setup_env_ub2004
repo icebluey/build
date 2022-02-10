@@ -8,7 +8,7 @@ _setup_env_ub2004() {
     ln -svf ../usr/share/zoneinfo/UTC /etc/localtime
     DEBIAN_FRONTEND=noninteractive apt install -y tzdata
     dpkg-reconfigure --frontend noninteractive tzdata
-    apt install -y bash wget ca-certificates git
+    apt install -y bash wget ca-certificates curl git
     ln -svf bash /bin/sh
     apt install -y binutils coreutils util-linux findutils diffutils patch sed gawk grep file gzip bzip2 xz-utils tar
     wget -c -t 9 -T 9 "https://github.com/icebluey/build/releases/download/v2022-02-08/bintar-20.04.tar.xz"
