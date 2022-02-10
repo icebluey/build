@@ -1,8 +1,6 @@
 # ubuntu 20.04
-
 apt update -y -qqq
-
-apt install -y bash
+apt install -y bash wget ca-certificates curl git
 sleep 1
 ln -svf bash /bin/sh
 
@@ -10,9 +8,9 @@ ln -svf ../usr/share/zoneinfo/UTC /etc/localtime
 DEBIAN_FRONTEND=noninteractive apt install -y tzdata
 dpkg-reconfigure --frontend noninteractive tzdata
 
-apt install -y binutils coreutils findutils util-linux diffutils libc-bin passwd pkg-config patch groff-base
+apt install -y binutils coreutils util-linux findutils diffutils patch libc-bin passwd pkg-config groff-base
 apt install -y zlib1g-dev libzstd-dev liblzma-dev libbz2-dev gzip bzip2 xz-utils tar
-apt install -y wget ca-certificates git libssl-dev openssl file sed grep gawk patch procps iproute2 net-tools iputils-ping vim bind9-dnsutils
+apt install -y libssl-dev openssl file sed grep gawk patch procps iproute2 net-tools iputils-ping vim bind9-dnsutils
 apt install -y lsof strace sysstat tcpdump
 apt install -y make gcc g++ perl libperl-dev groff-base dpkg-dev cmake m4
 # build from src
