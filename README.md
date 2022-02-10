@@ -3,3 +3,9 @@
 ```
 ln -svf bash /bin/sh && cd ubuntu/scripts && bash .build-all.sh 
 ```
+```
+
+wget -c -t 9 -T 9 "https://raw.githubusercontent.com/icebluey/build/master/.setup_env_ub2004" -O "/tmp/.setup_env_ub2004"
+bash "/tmp/.setup_env_ub2004"
+
+```
