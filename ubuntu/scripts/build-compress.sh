@@ -2,6 +2,8 @@
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='UTC'; export TZ
 
+umask 022
+
 #https://github.com/lz4/lz4.git
 #https://github.com/facebook/zstd.git
 
