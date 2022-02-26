@@ -2,6 +2,8 @@
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='UTC'; export TZ
 
+umask 022
+
 CC=gcc
 export CC
 CXX=g++
@@ -45,24 +47,37 @@ set -e
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
 
-for i in gnupg libgpg-error libgcrypt libassuan libksba npth ntbtls pinentry gpgme; do
+for i in libgpg-error libassuan libksba npth ntbtls pinentry gpgme; do
     _tarname=$(wget -qO- https://gnupg.org/ftp/gcrypt/${i}/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)
     wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/${i}/${_tarname}"
 done
+
+_gnupg23_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/gnupg/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^gnupg-2\.3' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg23_tarname}"
+
+#_gnupg22_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/gnupg/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^gnupg-2\.2' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+#wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg22_tarname}"
+
+_libgcrypt19_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/libgcrypt/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^libgcrypt-1\.9' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt19_tarname}"
+
+#_libgcrypt18_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/libgcrypt/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^libgcrypt-1\.8' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+#wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt18_tarname}"
+
 sleep 2
 ls -1 *.tar* | xargs -I '{}' tar -xf '{}'
 sleep 2
 rm -f *.tar*
 
-#libgpg-error-1.42
+#libgpg-error-1.44
 #libassuan-2.5.5
 #libksba-1.6.0
 #npth-1.6
-#libgcrypt-1.9.3
-#ntbtls-0.2.0
-#pinentry-1.1.1
-#gnupg-2.3.1
-#gpgme-1.15.1
+#libgcrypt-1.9.4
+#ntbtls-0.3.0
+#pinentry-1.2.0
+#gnupg-2.3.4
+#gpgme-1.17.0
 
 cd libgpg-error-*
 ./configure --build=x86_64-linux-gnu --host=x86_64-linux-gnu --enable-shared --enable-static --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --includedir=/usr/include --sysconfdir=/etc
