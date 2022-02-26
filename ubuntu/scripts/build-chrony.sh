@@ -2,6 +2,8 @@
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 TZ='UTC'; export TZ
 
+umask 022
+
 apt update -y -qqq
 # build nettle for gnutls
 apt install -y libgmp-dev
