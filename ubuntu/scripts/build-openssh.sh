@@ -105,6 +105,7 @@ sed -e 's|^#PermitEmptyPasswords |PermitEmptyPasswords |g' -e 's|^PermitEmptyPas
 sed 's|^#PasswordAuthentication .*|#PasswordAuthentication no|g' -i etc/ssh/sshd_config
 sed 's|^#KbdInteractiveAuthentication .*|#KbdInteractiveAuthentication no|g' -i etc/ssh/sshd_config
 sed 's@^#HostKey /etc/ssh/ssh_host_@HostKey /etc/ssh/ssh_host_@g' -i etc/ssh/sshd_config
+sed 's|^HostKey /etc/ssh/ssh_host_dsa_|#&|g' -i etc/ssh/sshd_config
 sed 's|^Ciphers |#Ciphers |g' -i etc/ssh/sshd_config
 sed 's|^MACs |#MACs |g' -i etc/ssh/sshd_config
 sed 's|^KexAlgorithms |#KexAlgorithms |g' -i etc/ssh/sshd_config
@@ -202,10 +203,10 @@ sleep 1
 install -m 0711 -d /var/empty/sshd
 
 rm -fr /etc/ssh/ssh_host_*
-/usr/bin/ssh-keygen -q -t rsa -b 5120 -E sha512 -f /etc/ssh/ssh_host_rsa_key -N "" -C ""
-/usr/bin/ssh-keygen -q -t dsa -E sha512 -f /etc/ssh/ssh_host_dsa_key -N "" -C ""
-/usr/bin/ssh-keygen -q -t ecdsa -b 521 -E sha512 -f /etc/ssh/ssh_host_ecdsa_key -N "" -C ""
-/usr/bin/ssh-keygen -q -t ed25519 -E sha512 -f /etc/ssh/ssh_host_ed25519_key -N "" -C ""
+/usr/bin/ssh-keygen -q -a 200 -t rsa -b 5120 -E sha512 -f /etc/ssh/ssh_host_rsa_key -N "" -C ""
+/usr/bin/ssh-keygen -q -a 200 -t dsa -E sha512 -f /etc/ssh/ssh_host_dsa_key -N "" -C ""
+/usr/bin/ssh-keygen -q -a 200 -t ecdsa -b 521 -E sha512 -f /etc/ssh/ssh_host_ecdsa_key -N "" -C ""
+/usr/bin/ssh-keygen -q -a 200 -t ed25519 -E sha512 -f /etc/ssh/ssh_host_ed25519_key -N "" -C ""
 rm -fr /lib/systemd/system/ssh.service
 rm -fr /lib/systemd/system/sshd.service
 sleep 1
@@ -216,10 +217,10 @@ sleep 1
 /bin/systemctl daemon-reload >/dev/null 2>&1 || : 
 ' > etc/ssh/.install.txt
 
-usr/bin/ssh-keygen -q -t rsa -b 5120 -E sha512 -f etc/ssh/ssh_host_rsa_key -N "" -C ""
-usr/bin/ssh-keygen -q -t dsa -E sha512 -f etc/ssh/ssh_host_dsa_key -N "" -C ""
-usr/bin/ssh-keygen -q -t ecdsa -b 521 -E sha512 -f etc/ssh/ssh_host_ecdsa_key -N "" -C ""
-usr/bin/ssh-keygen -q -t ed25519 -E sha512 -f etc/ssh/ssh_host_ed25519_key -N "" -C ""
+usr/bin/ssh-keygen -q -a 200 -t rsa -b 5120 -E sha512 -f etc/ssh/ssh_host_rsa_key -N "" -C ""
+usr/bin/ssh-keygen -q -a 200 -t dsa -E sha512 -f etc/ssh/ssh_host_dsa_key -N "" -C ""
+usr/bin/ssh-keygen -q -a 200 -t ecdsa -b 521 -E sha512 -f etc/ssh/ssh_host_ecdsa_key -N "" -C ""
+usr/bin/ssh-keygen -q -a 200 -t ed25519 -E sha512 -f etc/ssh/ssh_host_ed25519_key -N "" -C ""
 
 rm -fr var/run
 rm -fr run
