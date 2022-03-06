@@ -32,7 +32,7 @@ apt install -y libsystemd-dev libcrypt-dev
 apt install -y libncursesw5 libtinfo5 libncurses5
 
 # run keepalived
-apt install -y libnl-3-200 libnl-genl-3-200 libsnmp35 libnftnl11 libsystemd0
+apt install -y libnl-3-200 libnl-genl-3-200 libsnmp-dev libnftnl11 libsystemd0
 
 # build nettle for gnutls
 apt install -y libgmp-dev
