@@ -33,7 +33,8 @@ done
 cd /tmp/nginx.tmp/build-nginx/
 
 # Zlib
-wget -c 'https://zlib.net/zlib-1.2.11.tar.xz'
+_zlib_ver="$(wget -qO- 'https://www.zlib.net/' | grep -i 'HREF="zlib-[0-9].*\.tar\.' | sed 's|"|\n|g' | grep '^zlib-' | grep -ivE 'alpha|beta|rc' | sed -e 's|zlib-||g' -e 's|\.tar.*||g' | sort -V | uniq | tail -n 1)"
+wget -c -t 9 -T 9 "https://zlib.net/zlib-${_zlib_ver}.tar.xz"
 tar -xf  zlib-*.tar.xz
 sleep 2
 rm -fr zlib-*.tar*
