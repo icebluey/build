@@ -58,8 +58,11 @@ wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg23_tarname}"
 #_gnupg22_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/gnupg/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^gnupg-2\.2' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
 #wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg22_tarname}"
 
-_libgcrypt19_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/libgcrypt/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^libgcrypt-1\.9' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
-wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt19_tarname}"
+_libgcrypt110_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/libgcrypt/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^libgcrypt-1\.10' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt110_tarname}"
+
+#_libgcrypt19_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/libgcrypt/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^libgcrypt-1\.9' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+#wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt19_tarname}"
 
 #_libgcrypt18_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/libgcrypt/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^libgcrypt-1\.8' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
 #wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt18_tarname}"
