@@ -21,7 +21,9 @@ _ssl_ver="$(wget -qO- 'https://www.openssl.org/source/' | grep '1.1.1' | sed 's/
 _haproxy_path="$(wget -qO- 'https://www.haproxy.org/' | grep -i 'src/haproxy-' | sed 's/"/\n/g' | grep '^/download/' | grep -i '\.gz$' | sort -V | uniq | tail -n 1)"
 _haproxy_ver=$(echo ${_haproxy_path} | sed 's|/|\n|g' | grep '^haproxy-[1-9]' | sed -e 's|haproxy-||g' -e 's|\.tar.*||g')
 
-wget -c -t 0 -T 9 "https://www.zlib.net/zlib-1.2.11.tar.xz"
+_zlib_ver="$(wget -qO- 'https://www.zlib.net/' | grep -i 'HREF="zlib-[0-9].*\.tar\.' | sed 's|"|\n|g' | grep '^zlib-' | grep -ivE 'alpha|beta|rc' | sed -e 's|zlib-||g' -e 's|\.tar.*||g' | sort -V | uniq | tail -n 1)"
+wget -c -t 9 -T 9 "https://zlib.net/zlib-${_zlib_ver}.tar.xz"
+
 wget -c -t 0 -T 9 "https://www.lua.org/ftp/lua-${_lua_ver}.tar.gz"
 wget -c -t 0 -T 9 "https://github.com/PhilipHazel/pcre2/releases/download/pcre2-${_pcre2_ver}/pcre2-${_pcre2_ver}.tar.bz2"
 wget -c -t 0 -T 9 "https://www.openssl.org/source/openssl-${_ssl_ver}.tar.gz"
