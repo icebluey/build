@@ -29,7 +29,7 @@ wget -c -t 0 -T 9 "https://github.com/PhilipHazel/pcre2/releases/download/pcre2-
 wget -c -t 0 -T 9 "https://www.openssl.org/source/openssl-${_ssl_ver}.tar.gz"
 wget -c -t 0 -T 9 "https://www.haproxy.org${_haproxy_path}"
 
-tar -xf zlib-1.2.11.tar.xz
+tar -xf zlib-*.tar.xz
 tar -xf "lua-${_lua_ver}.tar.gz"
 tar -xf "pcre2-${_pcre2_ver}.tar.bz2"
 tar -xf "openssl-${_ssl_ver}.tar.gz"
