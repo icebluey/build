@@ -37,7 +37,7 @@ tar -xf "haproxy-${_haproxy_ver}.tar.gz"
 sleep 1
 rm -vf *.tar*
 
-cd zlib-1.2.11
+cd zlib-*
 ./configure --64 --static --prefix=/tmp/zlib
 make all -j2
 rm -fr /tmp/zlib
@@ -45,7 +45,7 @@ sleep 1
 make install
 sleep 2
 cd ..
-rm -fr zlib-1.2.11
+rm -fr zlib-*
 
 cd "openssl-${_ssl_ver}"
 ./Configure \
