@@ -284,6 +284,7 @@ keyserver hkps://keyserver.ubuntu.com
 expert
 no-comments
 no-emit-version
+keyid-format 0xlong
 with-subkey-fingerprint
 personal-digest-preferences SHA512 SHA384 SHA256 SHA224
 personal-cipher-preferences AES256 AES192 AES
