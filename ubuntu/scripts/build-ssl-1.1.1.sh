@@ -39,24 +39,21 @@ enable-ec_nistp_64_gcc_128 linux-x86_64 '-DDEVRANDOM="\"/dev/urandom\""'
 
 sed 's@engines-1.1@engines@g' -i Makefile
 make all -j1 
-make install 
-
+for i in libcrypto.pc libssl.pc openssl.pc ; do
+  sed -i '/^Libs.private:/{s/-L[^ ]* //;s/-Wl[^ ]* //}' $i
+done
 rm -fr /tmp/openssl
 sleep 1
-mkdir /tmp/openssl
-
+install -m 0755 -d /tmp/openssl
 make DESTDIR=/tmp/openssl install
 
 cd /tmp/openssl
-
+rm -fr usr/local/openssl-1.1.1/etc/pki/tls/certs
+rm -fr usr/local/openssl-1.1.1/share/doc
 strip usr/local/openssl-1.1.1/bin/openssl
 strip usr/local/openssl-1.1.1/lib/libssl.so.1.1
 strip usr/local/openssl-1.1.1/lib/libcrypto.so.1.1
 strip usr/local/openssl-1.1.1/lib/engines/*.so
-
-rm -fr usr/local/openssl-1.1.1/etc/pki/tls/certs
-sleep 1
-
 ln -svf /etc/ssl/certs usr/local/openssl-1.1.1/etc/pki/tls/certs
 ln -svf certs/ca-certificates.crt usr/local/openssl-1.1.1/etc/pki/tls/cert.pem
 
@@ -69,8 +66,6 @@ echo "/usr/local/openssl-1.1.1/lib" > /etc/ld.so.conf.d/openssl-1.1.1.conf
 (rm -f /usr/bin/openssl ; sleep 1 ; install -v -c -m 0755 bin/openssl /usr/bin/openssl)
 /sbin/ldconfig
 ' > usr/local/openssl-1.1.1/.install.txt
-
-rm -fr usr/local/openssl-1.1.1/share/doc
 
 find -L usr/local/openssl-1.1.1/share/man/ -type l -exec rm -f '{}' \;
 sleep 2
