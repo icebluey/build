@@ -62,6 +62,8 @@ github-release release \
 --repo "${_reponame}" \
 --tag "v${_datenow}"
 
+sleep 30
+
 GITHUB_TOKEN="${_token}" \
 github-release upload \
 --user "${_username}" \
