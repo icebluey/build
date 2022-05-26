@@ -41,21 +41,27 @@ rm -fr zlib-*.tar*
 mv -v zlib-* zlib
 
 # PCRE
-_pcre_ver="$(wget -qO- 'https://sourceforge.net/projects/pcre/files/pcre/' | grep -i 'href="/projects/pcre/files/pcre/[1-9]' | sed 's|"|\n|g' | grep -i '^/projects/pcre/files/pcre/' | sed 's|.*pcre/||g' | sed 's|/.*||g' | sort -V | uniq | tail -n 1)"
-wget -c "https://cfhcable.dl.sourceforge.net/project/pcre/pcre/${_pcre_ver}/pcre-${_pcre_ver}.tar.bz2"
-tar -xf "pcre-${_pcre_ver}.tar.bz2"
+#_pcre_ver="$(wget -qO- 'https://sourceforge.net/projects/pcre/files/pcre/' | grep -i 'href="/projects/pcre/files/pcre/[1-9]' | sed 's|"|\n|g' | grep -i '^/projects/pcre/files/pcre/' | sed 's|.*pcre/||g' | sed 's|/.*||g' | sort -V | uniq | tail -n 1)"
+#wget -c "https://cfhcable.dl.sourceforge.net/project/pcre/pcre/${_pcre_ver}/pcre-${_pcre_ver}.tar.bz2"
+#tar -xf "pcre-${_pcre_ver}.tar.bz2"
+#sleep 2
+#rm -fr pcre-*.tar*
+#mv -v pcre-* pcre
+
+_pcre2_ver="$(wget -qO- 'https://github.com/PCRE2Project/pcre2/releases' | grep -i 'pcre2-.*.tar.bz2' | sed 's|"|\n|g' | grep -i '^/PCRE2Project/pcre2/releases/download' | sed 's|.*/pcre2-||g' | sed 's|\.tar.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
+wget -c -t 9 -T 9 "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${_pcre2_ver}/pcre2-${_pcre2_ver}.tar.bz2"
+tar -xf pcre2-${_pcre2_ver}.tar.*
 sleep 2
-rm -fr pcre-*.tar*
-mv -v pcre-* pcre
+rm -f pcre2-*.tar*
+mv -v pcre2-* pcre
 
 # OpenSSL 1.1.1
 latest_targz=$(wget -qO- 'https://www.openssl.org/source/' | grep '1.1.1' | sed 's/">/ /g' | sed 's/<\/a>/ /g' | awk '{print $3}' | grep '.tar.gz' | head -n 1)
 wget -c -t 0 -T 9 "https://www.openssl.org/source/${latest_targz}"
-tar -zxf ${latest_targz}
+tar -xf ${latest_targz}
 sleep 2
-rm -fr openssl-*gz
+rm -fr openssl-*.tar*
 mv -v openssl-* openssl
-
 
 cd modules
 ###############################################################################
