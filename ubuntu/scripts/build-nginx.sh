@@ -105,11 +105,11 @@ ${_http_module_args} \
 ${_stream_module_args} \
 --with-mail \
 --with-mail_ssl_module \
---with-threads \
---with-select_module \
---with-poll_module \
---with-pcre-jit \
 --with-file-aio \
+--with-poll_module \
+--with-select_module \
+--with-threads \
+--with-pcre-jit \
 --with-pcre=../pcre \
 --with-zlib=../zlib \
 --with-openssl=../openssl \
@@ -121,10 +121,11 @@ ${_stream_module_args} \
 --add-module=../modules/ngx_http_memc_module \
 --add-module=../modules/ngx_http_redis2_module \
 --add-module=../modules/ngx_http_substitutions_filter_module \
---add-module=../modules/ngx_pagespeed \
---add-module=../modules/ngx_rtmp_module 
+--add-module=../modules/ngx_rtmp_module \
+--with-ld-opt='-Wl,-z,relro -Wl,--as-needed -Wl,-z,now'
 
 #--add-module=../modules/ngx_http_naxsi_module/naxsi_src \
+#--add-module=../modules/ngx_pagespeed \
 
 make -j1
 
