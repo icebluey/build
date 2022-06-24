@@ -60,8 +60,8 @@ export LDFLAGS
 ##############################################################################
 
 _vmajor=4
-_vminor=6
-_vpatch=3
+_vminor=7
+_vpatch=1
 
 _longver=$(printf "%1d%03d%03d" ${_vmajor} ${_vminor} ${_vpatch})
 _fullver="$(echo \"${_vmajor}\.${_vminor}\.${_vpatch}\")"
