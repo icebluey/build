@@ -8,40 +8,10 @@ CC=gcc
 export CC
 CXX=g++
 export CXX
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/local/openssl-1.1.1/lib"
+export LDFLAGS
 
 /sbin/ldconfig
-
-
-_install_fido2 () {
-    set -e
-    _tmp_dir="$(mktemp -d)"
-    cd "${_tmp_dir}"
-    _libfido2_ver="$(wget -qO- 'https://developers.yubico.com/libfido2/Releases/' | grep -i 'a href="libfido2-.*\.tar' | sed 's|"|\n|g' | grep -iv '\.sig' | grep -i '^libfido2' | sed -e 's|libfido2-||g' -e 's|\.tar.*||g' | sort -V | uniq | tail -n 1)"
-    wget -q -c -t 9 -T 9 "https://developers.yubico.com/libfido2/Releases/libfido2-${_libfido2_ver}.tar.gz"
-    sleep 1
-    tar -xf "libfido2-${_libfido2_ver}.tar.gz"
-    sleep 1
-    rm -f libfido*.tar*
-    cd "libfido2-${_libfido2_ver}"
-    PKG_CONFIG_PATH=/usr/local/openssl-1.1.1/lib/pkgconfig \
-    cmake -S . -B build -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE:STRING='Debug' \
-    -DCMAKE_INSTALL_SO_NO_EXE=0 -DUSE_PCSC=ON \
-    -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu
-    /usr/bin/cmake --build "build"  --verbose
-    rm -f /usr/lib/x86_64-linux-gnu/libfido2.*
-    rm -f /usr/include/fido.h
-    rm -fr /usr/include/fido
-    /usr/bin/cmake --install "build"
-    sleep 1
-    strip /usr/lib/x86_64-linux-gnu/libfido2.so.*.*
-    cd /tmp
-    rm -fr "${_tmp_dir}"
-    /sbin/ldconfig >/dev/null 2>&1
-}
-_install_fido2
-
-LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/local/openssl-1.1.1/lib -Wl,-rpath,/usr/lib/x86_64-linux-gnu/openssh/private"
-export LDFLAGS
 
 set -e
 
@@ -78,7 +48,6 @@ install -m 0755 -d /tmp/openssl
 make DESTDIR=/tmp/openssl install
 
 cd /tmp/openssl
-install -m 0755 -d usr/lib/x86_64-linux-gnu/openssh/private
 rm -fr usr/local/openssl-1.1.1/etc/pki/tls/certs
 rm -fr usr/local/openssl-1.1.1/share/doc
 strip usr/local/openssl-1.1.1/bin/openssl
@@ -87,7 +56,6 @@ strip usr/local/openssl-1.1.1/lib/libcrypto.so.1.1
 strip usr/local/openssl-1.1.1/lib/engines/*.so
 ln -svf /etc/ssl/certs usr/local/openssl-1.1.1/etc/pki/tls/certs
 ln -svf certs/ca-certificates.crt usr/local/openssl-1.1.1/etc/pki/tls/cert.pem
-cp -af /usr/lib/x86_64-linux-gnu/libfido2.so* usr/lib/x86_64-linux-gnu/openssh/private/
 
 echo '
 cd "$(dirname "$0")"
