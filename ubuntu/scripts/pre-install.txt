@@ -42,7 +42,6 @@ apt install -y libp11-kit-dev libidn2-dev
 apt install -y libseccomp-dev libcap-dev
 # build libfido2
 apt install -y libcbor-dev libpcsclite-dev
-apt install -y libcbor libpcsclite1
 
 # install gcc 10
 apt install -y gcc-10 g++-10 libstdc++-10-dev cpp-10
