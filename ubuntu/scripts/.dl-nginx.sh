@@ -48,12 +48,13 @@ mv -v zlib-* zlib
 #rm -fr pcre-*.tar*
 #mv -v pcre-* pcre
 
+# PCRE2
 _pcre2_ver="$(wget -qO- 'https://github.com/PCRE2Project/pcre2/releases' | grep -i 'pcre2-.*.tar.bz2' | sed 's|"|\n|g' | grep -i '^/PCRE2Project/pcre2/releases/download' | sed 's|.*/pcre2-||g' | sed 's|\.tar.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
 wget -c -t 9 -T 9 "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${_pcre2_ver}/pcre2-${_pcre2_ver}.tar.bz2"
 tar -xf pcre2-${_pcre2_ver}.tar.*
 sleep 2
 rm -f pcre2-*.tar*
-mv -v pcre2-* pcre
+mv -v pcre2-* pcre2
 
 # OpenSSL 1.1.1
 latest_targz=$(wget -qO- 'https://www.openssl.org/source/' | grep '1.1.1' | sed 's/">/ /g' | sed 's/<\/a>/ /g' | awk '{print $3}' | grep '.tar.gz' | head -n 1)
