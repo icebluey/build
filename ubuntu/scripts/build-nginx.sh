@@ -110,7 +110,7 @@ ${_stream_module_args} \
 --with-select_module \
 --with-threads \
 --with-pcre-jit \
---with-pcre=../pcre \
+--with-pcre=../pcre2 \
 --with-zlib=../zlib \
 --with-openssl=../openssl \
 --add-module=../modules/ngx_http_brotli_module \
