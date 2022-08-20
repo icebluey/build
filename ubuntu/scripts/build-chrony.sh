@@ -251,6 +251,8 @@ sed 's/^pool /#pool /g' -i etc/chrony/chrony.conf
 sed 's/^allow /#allow /g' -i etc/chrony/chrony.conf
 sed 's/^server/#server/g' -i etc/chrony/chrony.conf
 sed '3a\\nserver time.cloudflare.com iburst nts\nserver nts.ntp.se iburst nts\nserver nts.sth1.ntp.se iburst nts\nserver nts.sth2.ntp.se iburst nts\n#server time1.google.com iburst\n#server time2.google.com iburst\n#server time3.google.com iburst\n#server time4.google.com iburst' -i etc/chrony/chrony.conf
+sed '/^server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
+sed '/^#server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
 sed '/^After=/aAfter=dnscrypt-proxy.service network-online.target' -i etc/chrony/chronyd.service
 sed '/^ExecStart=/iExecStartPre=/usr/libexec/chrony/resolve-ntp-servers.sh' -i etc/chrony/chronyd.service
 
