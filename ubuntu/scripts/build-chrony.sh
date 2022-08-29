@@ -255,6 +255,8 @@ sed '/^server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
 sed '/^#server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
 sed '/^After=/aAfter=dnscrypt-proxy.service network-online.target' -i etc/chrony/chronyd.service
 sed '/^ExecStart=/iExecStartPre=/usr/libexec/chrony/resolve-ntp-servers.sh' -i etc/chrony/chronyd.service
+sed 's|^ProcSubset|#ProcSubset|g' -i etc/chrony/chronyd.service
+sed 's|^ProtectProc|#ProtectProc|g' -i etc/chrony/chronyd.service
 
 mkdir -p usr/lib/systemd/ntp-units.d
 echo 'chronyd.service' > usr/lib/systemd/ntp-units.d/50-chronyd.list
