@@ -49,7 +49,7 @@ mv -v zlib-* zlib
 #mv -v pcre-* pcre
 
 # PCRE2
-_pcre2_ver="$(wget -qO- 'https://github.com/PCRE2Project/pcre2/releases' | grep -i 'pcre2-.*.tar.bz2' | sed 's|"|\n|g' | grep -i '^/PCRE2Project/pcre2/releases/download' | sed 's|.*/pcre2-||g' | sed 's|\.tar.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
+_pcre2_ver="$(wget -qO- 'https://github.com/PCRE2Project/pcre2/releases' | grep -i 'pcre2-[0-9]' | grep -i 'href="/PCRE2Project/pcre2/releases/tag/pcre2-[0-9]' | sed 's|"|\n|g' | grep '^/PCRE2Project/pcre2/releases/tag/pcre2-[0-9]' | sed 's|.*pcre2-||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
 wget -c -t 9 -T 9 "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${_pcre2_ver}/pcre2-${_pcre2_ver}.tar.bz2"
 tar -xf pcre2-${_pcre2_ver}.tar.*
 sleep 2
