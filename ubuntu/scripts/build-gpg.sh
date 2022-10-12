@@ -254,11 +254,12 @@ cd gnupg-*
 make all
 rm -fr /tmp/gnupg
 make install DESTDIR=/tmp/gnupg
-install -v -m 0755 -d /tmp/gnupg/usr/lib/systemd/user
-cd doc/examples/systemd-user
-for i in *.*; do
-    install -v -c -m 0644 -D "$i" "/tmp/gnupg/usr/lib/systemd/user/$i"
-done
+
+#install -v -m 0755 -d /tmp/gnupg/usr/lib/systemd/user
+#cd doc/examples/systemd-user
+#for i in *.*; do
+#    install -v -c -m 0644 -D "$i" "/tmp/gnupg/usr/lib/systemd/user/$i"
+#done
 
 cd /tmp/gnupg
 install -m 0755 -d etc/gnupg
