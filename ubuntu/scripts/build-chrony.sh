@@ -12,22 +12,83 @@ apt install -y libp11-kit-dev libidn2-dev
 # build chrony
 apt install -y libseccomp-dev libcap-dev libedit-dev
 
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now"
+export LDFLAGS
+_ORIG_LDFLAGS="$LDFLAGS"
+
 CC=gcc
 export CC
 CXX=g++
 export CXX
+
 /sbin/ldconfig
 
 set -e
 
+_build_zstd() {
+
+_tmp_dir="$(mktemp -d)"
+cd "${_tmp_dir}"
+
+#https://github.com/facebook/zstd.git
+git clone "https://github.com/facebook/zstd.git"
+sleep 1
+cd zstd
+
+find ./ -iname Makefile | xargs -I "{}" sed 's@prefix.*?= /usr/local@prefix      ?= /usr@g' -i "{}"
+sed '/^libdir/s|)/lib$|)/lib/x86_64-linux-gnu|g' -i lib/Makefile
+sed 's@LIBDIR.*?= $(exec_prefix)/lib$@LIBDIR      ?= $(exec_prefix)/lib/x86_64-linux-gnu@'  -i lib/Makefile
+sleep 1
+make V=1 all prefix=/usr libdir=/usr/lib/x86_64-linux-gnu
+sleep 1
+rm -fr /tmp/zstd
+sleep 1
+make install DESTDIR=/tmp/zstd
+sleep 1
+cd /tmp/zstd/
+_zstd_ver="$(cat usr/lib/x86_64-linux-gnu/pkgconfig/libzstd.pc | grep '^Version: ' | awk '{print $NF}')"
+sed 's|http:|https:|g' -i usr/lib/x86_64-linux-gnu/pkgconfig/libzstd.pc
+find usr/ -type f -iname '*.la' -delete
+if [[ -d usr/share/man ]]; then
+    find -L usr/share/man/ -type l -exec rm -f '{}' \;
+    find usr/share/man/ -type f -iname '*.[1-9]' -exec gzip -f -9 '{}' \;
+    sleep 2
+    find -L usr/share/man/ -type l | while read file; do ln -svf "$(readlink -s "${file}").gz" "${file}.gz" ; done
+    sleep 2
+    find -L usr/share/man/ -type l -exec rm -f '{}' \;
+fi
+find usr/lib/x86_64-linux-gnu/ -type f -iname '*.so.*' -exec chmod 0755 '{}' \;
+sleep 2
+find usr/bin/ -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
+find usr/lib/x86_64-linux-gnu/ -type f -iname 'lib*.so.*' -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
+
+sleep 1
+install -m 0755 -d usr/lib/x86_64-linux-gnu/chrony/private
+sleep 1
+cp -a usr/lib/x86_64-linux-gnu/*.so* usr/lib/x86_64-linux-gnu/chrony/private/
+
+echo
+sleep 2
+tar -Jcvf /tmp/"zstd-${_zstd_ver}-1.el7.x86_64.tar.xz" *
+echo
+sleep 2
+tar -xf /tmp/"zstd-${_zstd_ver}-1.el7.x86_64.tar.xz" -C /
+
+cd /tmp
+rm -fr "${_tmp_dir}"
+rm -fr /tmp/zstd
+rm -fr /tmp/zstd*tar*
+printf '\033[01;32m%s\033[m\n' '  build zstd done'
+/sbin/ldconfig
+echo
+}
+
 _build_nettle () {
 
-CC=gcc
-export CC
-CXX=g++
-export CXX
-LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private"
+LDFLAGS=''
+LDFLAGS="${_ORIG_LDFLAGS}"' -Wl,-rpath,\$$ORIGIN'
 export LDFLAGS
+
 /sbin/ldconfig
 
 set -e
@@ -78,27 +139,24 @@ tar -Jcvf /tmp/"nettle_${_nettle_ver}-1_amd64.tar.xz" *
 echo
 sleep 2
 tar -xf /tmp/"nettle_${_nettle_ver}-1_amd64.tar.xz" -C /
-/sbin/ldconfig
-rm -fr /tmp/nettle
 
 cd /tmp
 rm -fr "${_tmp_dir}"
+rm -fr /tmp/nettle
+rm -fr /tmp/nettle*tar*
 /sbin/ldconfig
 sleep 2
 echo
 echo ' done'
 echo
-
 }
 
 _build_gnutls () {
 
-CC=gcc
-export CC
-CXX=g++
-export CXX
-LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private"
+LDFLAGS=''
+LDFLAGS="${_ORIG_LDFLAGS}"' -Wl,-rpath,\$$ORIGIN'
 export LDFLAGS
+
 /sbin/ldconfig
 
 set -e
@@ -157,27 +215,24 @@ tar -Jcvf /tmp/"gnutls_${_gnutls_ver}-1_amd64.tar.xz" *
 echo
 sleep 2
 tar -xf /tmp/"gnutls_${_gnutls_ver}-1_amd64.tar.xz" -C /
-/sbin/ldconfig
-rm -fr /tmp/gnutls
 
 cd /tmp
 rm -fr "${_tmp_dir}"
+rm -fr /tmp/gnutls
+rm -fr /tmp/gnutls*tar*
 /sbin/ldconfig
 sleep 2
 echo
 echo ' done'
 echo
-
 }
 
 _build_chrony () {
 
-CC=gcc
-export CC
-CXX=g++
-export CXX
-LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private"
+LDFLAGS=''
+LDFLAGS="${_ORIG_LDFLAGS}"' -Wl,-rpath,/usr/lib/x86_64-linux-gnu/chrony/private'
 export LDFLAGS
+
 /sbin/ldconfig
 
 set -e
@@ -250,7 +305,7 @@ sed 's|/etc/chrony\.|/etc/chrony/chrony\.|g' -i etc/chrony/chrony.conf
 sed 's/^pool /#pool /g' -i etc/chrony/chrony.conf
 sed 's/^allow /#allow /g' -i etc/chrony/chrony.conf
 sed 's/^server/#server/g' -i etc/chrony/chrony.conf
-sed '3a\\nserver time.cloudflare.com iburst nts\nserver nts.ntp.se iburst nts\nserver nts.sth1.ntp.se iburst nts\nserver nts.sth2.ntp.se iburst nts\n#server time1.google.com iburst\n#server time2.google.com iburst\n#server time3.google.com iburst\n#server time4.google.com iburst' -i etc/chrony/chrony.conf
+sed '3a\\nserver time.cloudflare.com iburst nts minpoll 2 maxpoll 3\nserver nts.sth1.ntp.se iburst nts minpoll 2 maxpoll 3\nserver nts.sth2.ntp.se iburst nts minpoll 2 maxpoll 3\n#server time1.google.com iburst minpoll 2 maxpoll 3\n#server time2.google.com iburst minpoll 2 maxpoll 3\n#server time3.google.com iburst minpoll 2 maxpoll 3\n#server time4.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
 sed '/^server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
 sed '/^#server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
 sed '/^After=/aAfter=dnscrypt-proxy.service network-online.target' -i etc/chrony/chronyd.service
@@ -325,6 +380,7 @@ touch /var/lib/chrony/{drift,rtc}
 /bin/systemctl daemon-reload >/dev/null 2>&1 || : 
 ' > etc/chrony/.install.txt
 
+chown -R root:root ./
 echo
 sleep 2
 tar -Jcvf /tmp/"chrony_${_chrony_ver}-1_amd64.tar.xz" *
@@ -345,7 +401,8 @@ echo
 }
 
 cd /tmp
-rm -fr /usr/lib/x86_64-linux-gnu/chrony/private
+rm -fr /usr/lib/x86_64-linux-gnu/chrony
+_build_zstd
 _build_nettle
 _build_gnutls
 _build_chrony
