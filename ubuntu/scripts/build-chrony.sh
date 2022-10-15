@@ -38,10 +38,18 @@ cd zstd
 #find ./ -iname Makefile | xargs -I "{}" sed 's@prefix.*?= /usr/local@prefix      ?= /usr@g' -i "{}"
 #sed '/^libdir/s|)/lib$|)/lib/x86_64-linux-gnu|g' -i lib/Makefile
 #sed 's@LIBDIR.*?= $(exec_prefix)/lib$@LIBDIR      ?= $(exec_prefix)/lib/x86_64-linux-gnu@'  -i lib/Makefile
-find ./ -iname Makefile | xargs -I "{}" sed '/^PREFIX/s|= .*|= /usr|g' -i "{}"
-find ./ -iname Makefile | xargs -I "{}" sed '/^LIBDIR/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i "{}"
-find ./ -iname Makefile | xargs -I "{}" sed '/^prefix/s|= .*|= /usr|g' -i "{}"
-find ./ -iname Makefile | xargs -I "{}" sed '/^libdir/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i "{}"
+sed '/^PREFIX/s|= .*|= /usr|g' -i Makefile
+sed '/^LIBDIR/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i Makefile
+sed '/^prefix/s|= .*|= /usr|g' -i Makefile
+sed '/^libdir/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i Makefile
+sed '/^PREFIX/s|= .*|= /usr|g' -i lib/Makefile
+sed '/^LIBDIR/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i lib/Makefile
+sed '/^prefix/s|= .*|= /usr|g' -i lib/Makefile
+sed '/^libdir/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i lib/Makefile
+sed '/^PREFIX/s|= .*|= /usr|g' -i programs/Makefile
+sed '/^LIBDIR/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i programs/Makefile
+sed '/^prefix/s|= .*|= /usr|g' -i programs/Makefile
+sed '/^libdir/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i programs/Makefile
 
 sleep 1
 make V=1 all prefix=/usr libdir=/usr/lib/x86_64-linux-gnu
