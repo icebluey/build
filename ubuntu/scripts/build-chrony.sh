@@ -316,15 +316,21 @@ sed -e 's|#\(driftfile\)|\1|' \
 
 sed 's|/etc/chrony\.|/etc/chrony/chrony\.|g' -i etc/chrony/chrony.conf
 sed 's/^pool /#pool /g' -i etc/chrony/chrony.conf
-sed 's/^allow /#allow /g' -i etc/chrony/chrony.conf
 sed 's/^server/#server/g' -i etc/chrony/chrony.conf
-sed '3a\\nserver time.cloudflare.com iburst nts minpoll 2 maxpoll 3\nserver nts.sth1.ntp.se iburst nts minpoll 2 maxpoll 3\nserver nts.sth2.ntp.se iburst nts minpoll 2 maxpoll 3\n#server time1.google.com iburst minpoll 2 maxpoll 3\n#server time2.google.com iburst minpoll 2 maxpoll 3\n#server time3.google.com iburst minpoll 2 maxpoll 3\n#server time4.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
-sed '/^server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
-sed '/^#server /s|$| minpoll 2 maxpoll 3|g' -i etc/chrony/chrony.conf
-sed '/^After=/aAfter=dnscrypt-proxy.service network-online.target' -i etc/chrony/chronyd.service
-sed '/^ExecStart=/iExecStartPre=/usr/libexec/chrony/resolve-ntp-servers.sh' -i etc/chrony/chronyd.service
+sed 's/^allow /#allow /g' -i etc/chrony/chrony.conf
+sed '5i# Use public NTS servers' -i etc/chrony/chrony.conf
+sed '6iserver time.cloudflare.com iburst minpoll 2 maxpoll 3 nts' -i etc/chrony/chrony.conf
+sed '7iserver nts.sth1.ntp.se iburst minpoll 2 maxpoll 3 nts' -i etc/chrony/chrony.conf
+sed '8iserver nts.sth2.ntp.se iburst minpoll 2 maxpoll 3 nts' -i etc/chrony/chrony.conf
+sed '9i#server time1.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
+sed '10i#server time2.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
+sed '11i#server time3.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
+sed '12i#server time4.google.com iburst minpoll 2 maxpoll 3\n' -i etc/chrony/chrony.conf
+
 sed 's|^ProcSubset|#ProcSubset|g' -i etc/chrony/chronyd.service
 sed 's|^ProtectProc|#ProtectProc|g' -i etc/chrony/chronyd.service
+sed '/^After=/aAfter=dnscrypt-proxy.service network-online.target' -i etc/chrony/chronyd.service
+sed '/^ExecStart=/iExecStartPre=/usr/libexec/chrony/resolve-ntp-servers.sh' -i etc/chrony/chronyd.service
 
 mkdir -p usr/lib/systemd/ntp-units.d
 echo 'chronyd.service' > usr/lib/systemd/ntp-units.d/50-chronyd.list
