@@ -200,6 +200,11 @@ cd "gnutls-${_gnutls_ver}"
 --includedir=/usr/include \
 --sysconfdir=/etc
 
+sleep 1
+find ./ -type f -iname 'Makefile' | xargs -I "{}" sed 's| -Wl,-rpath -Wl,/usr/lib/x86_64-linux-gnu||g' -i "{}"
+sleep 1
+find ./ -type f -iname 'Makefile' | xargs -I "{}" sed 's| -R/usr/lib/x86_64-linux-gnu||g' -i "{}"
+sleep 1
 make all
 rm -fr /tmp/gnutls
 make install DESTDIR=/tmp/gnutls
