@@ -27,6 +27,14 @@ set -e
 
 _build_zstd() {
 
+LDFLAGS=''
+LDFLAGS="${_ORIG_LDFLAGS}"
+export LDFLAGS
+
+/sbin/ldconfig
+
+set -e
+
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
 
@@ -92,6 +100,68 @@ rm -fr "${_tmp_dir}"
 rm -fr /tmp/zstd
 rm -fr /tmp/zstd*tar*
 printf '\033[01;32m%s\033[m\n' '  build zstd done'
+/sbin/ldconfig
+echo
+}
+
+_build_brotli() {
+
+LDFLAGS=''
+LDFLAGS="${_ORIG_LDFLAGS}"' -Wl,-rpath,\$$ORIGIN'
+export LDFLAGS
+
+/sbin/ldconfig
+
+set -e
+
+_tmp_dir="$(mktemp -d)"
+cd "${_tmp_dir}"
+
+git clone --recursive 'https://github.com/google/brotli.git' brotli
+cd brotli
+rm -fr .git
+bash bootstrap
+./configure \
+--build=x86_64-linux-gnu --host=x86_64-linux-gnu \
+--enable-shared --enable-static \
+--prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --includedir=/usr/include --sysconfdir=/etc
+sleep 1
+make all
+rm -fr /tmp/brotli
+make install DESTDIR=/tmp/brotli
+cd /tmp/brotli
+sed 's|http://|https://|g' -i usr/lib/x86_64-linux-gnu/pkgconfig/*.pc
+find usr/ -type f -iname '*.la' -delete
+if [[ -d usr/share/man ]]; then
+    find -L usr/share/man/ -type l -exec rm -f '{}' \;
+    find usr/share/man/ -type f -iname '*.[1-9]' -exec gzip -f -9 '{}' \;
+    sleep 2
+    find -L usr/share/man/ -type l | while read file; do ln -svf "$(readlink -s "${file}").gz" "${file}.gz" ; done
+    sleep 2
+    find -L usr/share/man/ -type l -exec rm -f '{}' \;
+fi
+find usr/lib/x86_64-linux-gnu/ -type f -iname '*.so.*' -exec chmod 0755 '{}' \;
+sleep 2
+find usr/bin/ -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
+find usr/lib/x86_64-linux-gnu/ -type f -iname 'lib*.so.*' -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
+
+sleep 1
+install -m 0755 -d usr/lib/x86_64-linux-gnu/chrony/private
+sleep 1
+cp -a usr/lib/x86_64-linux-gnu/*.so* usr/lib/x86_64-linux-gnu/chrony/private/
+
+echo
+sleep 2
+tar -Jcvf /tmp/brotli-git-1.el7.x86_64.tar.xz *
+echo
+sleep 2
+tar -xf /tmp/brotli-git-1.el7.x86_64.tar.xz -C /
+
+cd /tmp
+rm -fr "${_tmp_dir}"
+rm -fr /tmp/brotli
+rm -fr /tmp/brotli*tar*
+printf '\033[01;32m%s\033[m\n' '  build brotli done'
 /sbin/ldconfig
 echo
 }
@@ -427,6 +497,7 @@ echo
 cd /tmp
 rm -fr /usr/lib/x86_64-linux-gnu/chrony
 _build_zstd
+_build_brotli
 _build_nettle
 _build_gnutls
 _build_chrony
