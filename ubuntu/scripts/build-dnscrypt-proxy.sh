@@ -171,7 +171,7 @@ RuntimeDirectory=dnscrypt-proxy
 #StateDirectory=dnscrypt-proxy
 SystemCallArchitectures=native
 SystemCallFilter=@system-service @chown
-SystemCallFilter=~@resources @privileged
+#SystemCallFilter=~@resources @privileged
 
 [Install]
 WantedBy=multi-user.target' > etc/dnscrypt-proxy/dnscrypt-proxy.service
@@ -202,7 +202,7 @@ cd "$(dirname "$0")"
 rm -f /lib/systemd/system/dnscrypt-proxy.s*
 sleep 1
 install -v -c -m 0644 dnscrypt-proxy.service /lib/systemd/system/
-install -v -c -m 0644 dnscrypt-proxy.socket /lib/systemd/system/
+#install -v -c -m 0644 dnscrypt-proxy.socket /lib/systemd/system/
 systemctl daemon-reload >/dev/null 2>&1 || : 
 echo "nameserver 127.0.0.1" > /etc/resolv.conf
 ' > etc/dnscrypt-proxy/.install.txt
