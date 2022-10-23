@@ -34,6 +34,7 @@ rm -vf "keepalived-${_keepalived_ver}.tar.gz"
 sleep 1
 
 cd "openssl-${_ssl_ver}"
+sed '/define X509_CERT_FILE .*OPENSSLDIR "/s|"/cert.pem"|"/certs/ca-certificates.crt"|g' -i include/internal/cryptlib.h
 ./Configure \
 --prefix=/usr \
 --libdir=/usr/lib/x86_64-linux-gnu \
