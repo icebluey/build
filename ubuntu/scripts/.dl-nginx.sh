@@ -13,15 +13,23 @@ cd /tmp
 set -e
 
 rm -fr /tmp/tip.tar*
+rm -fr /tmp/default.tar*
 rm -fr /tmp/nginx.tm*
 mkdir -p /tmp/nginx.tmp/build-nginx/modules
 
-wget -c -t 0 -T 9 -O /tmp/tip.tar.gz 'https://hg.nginx.org/nginx/archive/tip.tar.gz'
+#wget -c -t 0 -T 9 -O /tmp/tip.tar.gz 'https://hg.nginx.org/nginx/archive/tip.tar.gz'
+#sleep 2
+#tar -xf /tmp/tip.tar.gz -C /tmp/nginx.tmp/build-nginx/
+
+wget -c -t 0 -T 9 -O /tmp/default.tar.gz "https://hg.nginx.org/nginx/archive/default.tar.gz"
 sleep 2
-tar -xf /tmp/tip.tar.gz -C /tmp/nginx.tmp/build-nginx/
+tar -xof /tmp/default.tar.gz -C /tmp/nginx.tmp/build-nginx/
+
 sleep 2
-mv -v /tmp/nginx.tmp/build-nginx/nginx-* /tmp/nginx.tmp/build-nginx/nginx
+mv -f /tmp/nginx.tmp/build-nginx/nginx-* /tmp/nginx.tmp/build-nginx/nginx
+
 rm -f /tmp/tip.tar*
+rm -f /tmp/default.tar*
 
 mkdir -p /tmp/nginx.tmp/build-nginx/geoip2
 cd /tmp/nginx.tmp/build-nginx/geoip2
