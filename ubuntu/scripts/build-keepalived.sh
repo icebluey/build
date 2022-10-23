@@ -9,6 +9,10 @@ apt update -y -qqq
 apt install -y libsystemd-dev libipset-dev iptables libsnmp-dev libmnl-dev libnftnl-dev libnl-3-dev libnl-genl-3-dev libnfnetlink-dev
 apt install -y ipset iptables
 
+LDFLAGS="-Wl,-z,relro -Wl,--as-needed -Wl,-z,now"
+export LDFLAGS
+_ORIG_LDFLAGS="$LDFLAGS"
+
 CC=gcc
 export CC
 CXX=g++
@@ -34,6 +38,9 @@ rm -vf "keepalived-${_keepalived_ver}.tar.gz"
 sleep 1
 
 cd "openssl-${_ssl_ver}"
+LDFLAGS=''
+LDFLAGS="${_ORIG_LDFLAGS}"' -Wl,-rpath,\$$ORIGIN'
+export LDFLAGS
 sed '/define X509_CERT_FILE .*OPENSSLDIR "/s|"/cert.pem"|"/certs/ca-certificates.crt"|g' -i include/internal/cryptlib.h
 ./Configure \
 --prefix=/usr \
@@ -71,8 +78,10 @@ install -c -m 0644 /usr/include/openssl/opensslconf.h /usr/include/x86_64-linux-
 /sbin/ldconfig
 
 cd "keepalived-${_keepalived_ver}"
+LDFLAGS=''
+LDFLAGS="${_ORIG_LDFLAGS}"' -Wl,-rpath,/usr/lib/x86_64-linux-gnu/keepalived/private'
+export LDFLAGS
 ./configure \
-LDFLAGS="-Wl,-rpath,/usr/lib/x86_64-linux-gnu/keepalived/private" \
 --build=x86_64-linux-gnu \
 --host=x86_64-linux-gnu \
 --prefix=/usr \
