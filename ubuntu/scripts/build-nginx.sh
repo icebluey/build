@@ -49,13 +49,12 @@ export CC
 CXX=g++
 export CXX
 
-CFLAGS="$CFLAGS -I/usr/local/openssl-1.1.1/include"
-export CFLAGS
-CXXFLAGS="$CXXFLAGS -I/usr/local/openssl-1.1.1/include"
-export CXXFLAGS
-LDFLAGS="$LDFLAGS -L/usr/local/openssl-1.1.1/lib"
-export LDFLAGS
-
+#CFLAGS="$CFLAGS -I/usr/local/openssl-1.1.1/include"
+#export CFLAGS
+#CXXFLAGS="$CXXFLAGS -I/usr/local/openssl-1.1.1/include"
+#export CXXFLAGS
+#LDFLAGS="$LDFLAGS -L/usr/local/openssl-1.1.1/lib"
+#export LDFLAGS
 
 ##############################################################################
 
