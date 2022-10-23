@@ -59,8 +59,7 @@ git clone -b "${_branch}" 'https://github.com/quictls/openssl.git'
 sleep 2
 cd openssl
 rm -fr .git
-sleep 2
-
+sed '/define X509_CERT_FILE .*OPENSSLDIR "/s|"/cert.pem"|"/certs/ca-certificates.crt"|g' -i include/internal/cryptlib.h
 ./Configure \
 --prefix=/usr \
 --libdir=/usr/lib/x86_64-linux-gnu \
@@ -73,14 +72,12 @@ no-sm2 no-sm3 no-sm4 \
 enable-ec_nistp_64_gcc_128 linux-x86_64 \
 '-DDEVRANDOM="\"/dev/urandom\""'
 
-sleep 1
 sed 's@engines-81.1.1@engines@g' -i Makefile
-sleep 1
 make all
 rm -fr /tmp/openssl
-sleep 2
+sleep 1
 make DESTDIR=/tmp/openssl install_sw
-sleep 2
+sleep 1
 cd ..
 rm -fr openssl*
 
