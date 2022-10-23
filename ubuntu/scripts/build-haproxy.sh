@@ -48,6 +48,7 @@ cd ..
 rm -fr zlib-*
 
 cd "openssl-${_ssl_ver}"
+sed '/define X509_CERT_FILE .*OPENSSLDIR "/s|"/cert.pem"|"/certs/ca-certificates.crt"|g' -i include/internal/cryptlib.h
 ./Configure \
 --prefix=/usr \
 --libdir=/usr/lib/x86_64-linux-gnu \
@@ -61,9 +62,7 @@ enable-ec_nistp_64_gcc_128 \
 linux-x86_64 \
 '-DDEVRANDOM="\"/dev/urandom\""'
 
-sleep 1
 #sed 's@engines-1.1@engines@g' -i Makefile
-sleep 1
 make all
 rm -fr /tmp/openssl
 sleep 2
