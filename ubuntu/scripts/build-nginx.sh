@@ -76,6 +76,8 @@ _http_module_args="$(./auto/configure --help | grep -i '\--with-http' | awk '{pr
 _stream_module_args="$(./auto/configure --help | grep -i '\--with-stream' | awk '{print $1}' | sed 's/^[ ]*//g' | sed 's/[ ]*$//g' | grep -v '=' | sort -u | uniq | grep -iv 'geoip' | paste -sd' ')"
 sleep 2
 sed '/define X509_CERT_FILE .*OPENSSLDIR "/s|"/cert.pem"|"/certs/ca-certificates.crt"|g' -i ../openssl/include/internal/cryptlib.h
+sed '/define /s|OPENSSLDIR|"/etc/ssl"|g' -i ../openssl/include/internal/cryptlib.h
+
 ./auto/configure \
 --build=x86_64-linux-gnu \
 --prefix=/usr/share/nginx \
