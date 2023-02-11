@@ -26,7 +26,10 @@ tar -xf "${latest_targz}"
 sleep 2
 rm -fr ${latest_targz}
 cd openssl-1.1.1*
-
+sed '/define X509_CERT_FILE .*OPENSSLDIR "/s|"/cert.pem"|"/certs/ca-certificates.crt"|g' -i include/internal/cryptlib.h
+sed '/install_docs:/s| install_html_docs||g' -i Configurations/unix-Makefile.tmpl
+sleep 1
+HASHBANGPERL=/usr/bin/perl
 ./Configure \
 --prefix=/usr/local/openssl-1.1.1 \
 --openssldir=/usr/local/openssl-1.1.1/etc/pki/tls \
