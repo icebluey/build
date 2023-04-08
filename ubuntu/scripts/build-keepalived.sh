@@ -68,10 +68,10 @@ rm -fr "openssl-${_ssl_ver}"
 find /tmp/openssl/usr/bin/ -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
 find /tmp/openssl/usr/lib/x86_64-linux-gnu/ -type f -iname '*.so*' -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
 sleep 2
-cp -a /tmp/openssl/usr/include/openssl /usr/include/
+cp -afr /tmp/openssl/usr/include/openssl /usr/include/
 rm -f /usr/include/x86_64-linux-gnu/openssl/opensslconf.h
-cp -a /tmp/openssl/usr/lib/x86_64-linux-gnu/* /usr/lib/x86_64-linux-gnu/
-cp -a /tmp/openssl/usr/bin/* /usr/bin/
+cp -afr /tmp/openssl/usr/lib/x86_64-linux-gnu/* /usr/lib/x86_64-linux-gnu/
+cp -afr /tmp/openssl/usr/bin/* /usr/bin/
 mkdir -p /usr/include/x86_64-linux-gnu/openssl
 install -c -m 0644 /usr/include/openssl/opensslconf.h /usr/include/x86_64-linux-gnu/openssl/
 
