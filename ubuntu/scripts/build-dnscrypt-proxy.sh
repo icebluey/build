@@ -132,9 +132,10 @@ sed 's/^fallback_resolvers/#&/g' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 sed 's/^bootstrap_resolvers/#&/g' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 sed "s/^netprobe_address =.*/netprobe_address = '1.1.1.1:443'/g" -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
-sed '/^# tls_cipher_suite =./atls_cipher_suite = \[4865, 4867\]' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
+sed '/^# tls_cipher_suite =./atls_cipher_suite = \[4865, 4867, 49195, 49199\]' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 sed 's/^dnscrypt_servers =.*/dnscrypt_servers = false/g' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 sed "/^# server_names =/aserver_names = \['google', 'cloudflare'\]" -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
+sed 's|^keepalive = .*|keepalive = 7200|g' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ###############################################################################
 
