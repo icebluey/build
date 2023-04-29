@@ -52,9 +52,11 @@ for i in libgpg-error libassuan libksba npth ntbtls pinentry gpgme; do
     wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/${i}/${_tarname}"
 done
 
-_gnupg23_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/gnupg/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^gnupg-2\.3' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
-wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg23_tarname}"
+_gnupg24_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/gnupg/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^gnupg-2\.4' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg24_tarname}"
 
+#_gnupg23_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/gnupg/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^gnupg-2\.3' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
+#wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg23_tarname}"
 #_gnupg22_tarname="$(wget -qO- https://gnupg.org/ftp/gcrypt/gnupg/ | grep '\.tar\.bz2' | sed 's/href="/ /g' | sed 's/">/ /g' | sed 's/ /\n/g' | grep '^gnupg-2\.2' | sed -n '/\.tar\.bz2$/p' | sed -e '/-qt/d' | sort -V | uniq | tail -n 1)"
 #wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/gnupg/${_gnupg22_tarname}"
 
@@ -68,19 +70,19 @@ wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt110_tarnam
 #wget -c -t 0 -T 9 "https://gnupg.org/ftp/gcrypt/libgcrypt/${_libgcrypt18_tarname}"
 
 sleep 2
-ls -1 *.tar* | xargs -I '{}' tar -xf '{}'
+ls -1 *.tar* | xargs -I '{}' tar -xof '{}'
 sleep 2
 rm -f *.tar*
 
-#libgpg-error-1.44
+#libgpg-error-1.47
 #libassuan-2.5.5
-#libksba-1.6.0
+#libksba-1.6.3
 #npth-1.6
-#libgcrypt-1.9.4
-#ntbtls-0.3.0
-#pinentry-1.2.0
-#gnupg-2.3.4
-#gpgme-1.17.0
+#libgcrypt-1.10.2
+#ntbtls-0.3.1
+#pinentry-1.2.1
+#gnupg-2.4.1
+#gpgme-1.20.0
 
 cd libgpg-error-*
 ./configure --build=x86_64-linux-gnu --host=x86_64-linux-gnu --enable-shared --enable-static --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --includedir=/usr/include --sysconfdir=/etc
