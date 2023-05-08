@@ -11,7 +11,7 @@ _setup_env_ub2004() {
     apt install -y bash wget ca-certificates curl git
     ln -svf bash /bin/sh
     apt install -y binutils coreutils util-linux findutils diffutils patch sed gawk grep file tar gzip bzip2 xz-utils
-    apt install -y daemon procps psmisc net-tools
+    apt install -y daemon procps psmisc net-tools chrpath
     _bintar_ver="$(wget -qO- 'https://github.com/icebluey/build/releases/' | grep -i 'a href="/icebluey/build/' | sed 's|"|\n|g' | grep -i '^/icebluey/build/tree/' | sed -e 's|.*tree/||g' | sort -V | uniq | tail -n 1)"
     wget -c -t 9 -T 9 "https://github.com/icebluey/build/releases/download/${_bintar_ver}/bintar-20.04.tar.xz"
     _bintar_ver=''
