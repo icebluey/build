@@ -101,7 +101,7 @@ _install_curl() {
     /sbin/ldconfig
     _release_ver='' ; _dl_path=''
 }
-#_install_curl
+_install_curl
 
 _install_wget() {
     set -e
