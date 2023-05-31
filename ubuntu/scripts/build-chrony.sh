@@ -327,13 +327,13 @@ set -e
 
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
-_chrony_ver=$(wget -qO- 'https://download.tuxfamily.org/chrony/' | grep -ivE 'pre[1-9]|alpha|beta' | grep -i 'a href="chrony-.*\.tar' | sed 's|"|\n|g' | grep -i '^chrony-.*\.tar' | sed -e 's|chrony-||g' -e 's|\.tar.*||g' | sort -V | uniq | tail -n 1)
+_chrony_ver=$(wget -qO- 'https://chrony.tuxfamily.org/download.html' | grep 'chrony-[1-9].*\.tar' | sed 's|"|\n|g' | sed 's|chrony|\nchrony|g' | grep '^chrony-[1-9]' | sed -e 's|\.tar.*||g' -e 's|chrony-||g' | grep -ivE 'alpha|beta|rc[0-9]|pre' | sort -V | tail -n 1)
 wget -c -t 0 -T 9 "https://download.tuxfamily.org/chrony/chrony-${_chrony_ver}.tar.gz"
 sleep 2
-tar -xf "chrony-${_chrony_ver}.tar.gz"
-sleep 2
-rm -f "chrony-${_chrony_ver}.tar.gz"
-cd "chrony-${_chrony_ver}"
+tar -xof chrony-*.tar*
+sleep 1
+rm -f chrony-*.tar*
+cd chrony-*
 
 ./configure \
 --prefix=/usr \
@@ -378,7 +378,7 @@ find usr/sbin/ -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not
 sleep 1
 mkdir -p usr/lib/x86_64-linux-gnu/chrony
 sleep 1
-cp -a /usr/lib/x86_64-linux-gnu/chrony/private usr/lib/x86_64-linux-gnu/chrony/
+cp -afr /usr/lib/x86_64-linux-gnu/chrony/private usr/lib/x86_64-linux-gnu/chrony/
 
 sed -e 's|#\(driftfile\)|\1|' \
 -e 's|#\(rtcsync\)|\1|' \
