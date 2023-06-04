@@ -181,10 +181,10 @@ cd "${_tmp_dir}"
 _nettle_ver=$(wget -qO- 'https://ftp.gnu.org/gnu/nettle/' | grep -i 'a href="nettle.*\.tar' | sed 's/"/\n/g' | grep -i '^nettle-.*tar.gz$' | sed -e 's|nettle-||g' -e 's|\.tar.*||g' | sort -V | uniq | tail -n 1)
 wget -c -t 0 -T 9 "https://ftp.gnu.org/gnu/nettle/nettle-${_nettle_ver}.tar.gz"
 sleep 2
-tar -xf "nettle-${_nettle_ver}.tar.gz"
+tar -xof nettle-*.tar*
 sleep 2
-rm -f "nettle-${_nettle_ver}.tar.gz"
-cd "nettle-${_nettle_ver}"
+rm -f nettle-*.tar*
+cd nettle-*
 
 ./configure \
 --build=x86_64-linux-gnu --host=x86_64-linux-gnu \
@@ -249,10 +249,10 @@ cd "${_tmp_dir}"
 _gnutls_ver="$(wget -qO- 'https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/' | grep -i 'a href="gnutls.*\.tar' | sed 's/"/\n/g' | grep -i '^gnutls-.*tar.xz$' | sed -e 's|gnutls-||g' -e 's|\.tar.*||g' | sort -V | uniq | tail -n 1)"
 wget -c -t 0 -T 9 "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-${_gnutls_ver}.tar.xz"
 sleep 2
-tar -xf "gnutls-${_gnutls_ver}.tar.xz"
+tar -xof gnutls-*.tar*
 sleep 2
-rm -f "gnutls-${_gnutls_ver}.tar.xz"
-cd "gnutls-${_gnutls_ver}"
+rm -f gnutls-*.tar*
+cd gnutls-*
 
 ./configure \
 --build=x86_64-linux-gnu \
@@ -394,13 +394,13 @@ sed 's/^pool /#pool /g' -i etc/chrony/chrony.conf
 sed 's/^server/#server/g' -i etc/chrony/chrony.conf
 sed 's/^allow /#allow /g' -i etc/chrony/chrony.conf
 sed '5i# Use public NTS servers' -i etc/chrony/chrony.conf
-sed '6iserver time.cloudflare.com iburst minpoll 2 maxpoll 3 nts' -i etc/chrony/chrony.conf
-sed '7iserver nts.sth1.ntp.se iburst minpoll 2 maxpoll 3 nts' -i etc/chrony/chrony.conf
-sed '8iserver nts.sth2.ntp.se iburst minpoll 2 maxpoll 3 nts' -i etc/chrony/chrony.conf
-sed '9i#server time1.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
-sed '10i#server time2.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
-sed '11i#server time3.google.com iburst minpoll 2 maxpoll 3' -i etc/chrony/chrony.conf
-sed '12i#server time4.google.com iburst minpoll 2 maxpoll 3\n' -i etc/chrony/chrony.conf
+sed '6iserver time.cloudflare.com iburst minpoll 4 maxpoll 5 nts' -i etc/chrony/chrony.conf
+sed '7iserver nts.sth1.ntp.se iburst minpoll 4 maxpoll 5 nts' -i etc/chrony/chrony.conf
+sed '8iserver nts.sth2.ntp.se iburst minpoll 4 maxpoll 5 nts' -i etc/chrony/chrony.conf
+sed '9i#server time1.google.com iburst minpoll 4 maxpoll 5' -i etc/chrony/chrony.conf
+sed '10i#server time2.google.com iburst minpoll 4 maxpoll 5' -i etc/chrony/chrony.conf
+sed '11i#server time3.google.com iburst minpoll 4 maxpoll 5' -i etc/chrony/chrony.conf
+sed '12i#server time4.google.com iburst minpoll 4 maxpoll 5\n' -i etc/chrony/chrony.conf
 
 sed 's|^ProcSubset|#ProcSubset|g' -i etc/chrony/chronyd.service
 sed 's|^ProtectProc|#ProtectProc|g' -i etc/chrony/chronyd.service
@@ -480,7 +480,7 @@ sleep 2
 tar -Jcvf /tmp/"chrony_${_chrony_ver}-1_amd64.tar.xz" *
 echo
 sleep 2
-tar -xf /tmp/"chrony_${_chrony_ver}-1_amd64.tar.xz" -C /
+tar -xof /tmp/"chrony_${_chrony_ver}-1_amd64.tar.xz" -C /
 /sbin/ldconfig
 rm -fr /tmp/chrony
 
