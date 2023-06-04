@@ -131,7 +131,7 @@ sleep 1
 
 sed "s/^listen_addresses =.*/listen_addresses = \['127.0.0.1:53'\]/g" -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 sed 's/^ipv6_servers = .*/ipv6_servers = false/g' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
-sed '/^listen_addresses =/i # listen_addresses = \['\''0.0.0.0:53'\''\]' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
+sed '/^listen_addresses =/i #listen_addresses = \['\''0.0.0.0:53'\''\]' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 sed 's/^fallback_resolvers/#&/g' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
 sed 's/^bootstrap_resolvers/#&/g' -i etc/dnscrypt-proxy/dnscrypt-proxy.toml
