@@ -59,8 +59,8 @@ bash build-openssh.sh
 mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
 
 #bash build-haproxy.sh
-bash build-haproxy-quic-ub2004.sh
-mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
+#bash build-haproxy-quic-ub2004.sh
+#mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
 
 bash build-keepalived.sh
 mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
