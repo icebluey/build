@@ -48,8 +48,7 @@ _setup_env_ub2004() {
     systemctl stop systemd-timesyncd >/dev/null 2>&1 || : 
     systemctl disable systemd-timesyncd >/dev/null 2>&1 || : 
     systemctl disable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
-    systemctl enable dnscrypt-proxy.service sshd.service chronyd.service >/dev/null 2>&1 || : 
-    systemctl start dnscrypt-proxy.service >/dev/null 2>&1 || : 
+    systemctl enable sshd.service chronyd.service >/dev/null 2>&1 || : 
     systemctl start chronyd.service >/dev/null 2>&1 || : 
 
     # OpenSSH
@@ -67,6 +66,7 @@ _setup_env_ub2004() {
     echo
 }
 _setup_env_ub2004
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > /etc/resolv.conf
 
 _install_git() {
     set -e
