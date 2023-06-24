@@ -67,6 +67,10 @@ _setup_env_ub2004() {
 }
 _setup_env_ub2004
 echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > /etc/resolv.conf
+apt install -y libnftables-dev nftables || : 
+apt install -y libipset-dev ipset || : 
+apt install -y iptables || : 
+apt install -y libsnmp-dev libmnl-dev libnftnl-dev libnl-3-dev libnl-genl-3-dev libnfnetlink-dev || : 
 
 _install_git() {
     set -e
