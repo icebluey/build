@@ -42,7 +42,7 @@ sed '/^LIBDIR/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i programs/Makefile
 sed '/^prefix/s|= .*|= /usr|g' -i programs/Makefile
 sed '/^libdir/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i programs/Makefile
 sleep 1
-make V=1 all prefix=/usr libdir=/usr/lib/x86_64-linux-gnu
+make V=1 prefix=/usr libdir=/usr/lib/x86_64-linux-gnu
 rm -fr /tmp/lz4
 rm -fr /tmp/lz4*.tar*
 make install DESTDIR=/tmp/lz4
@@ -81,7 +81,7 @@ sed '/^LIBDIR/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i programs/Makefile
 sed '/^prefix/s|= .*|= /usr|g' -i programs/Makefile
 sed '/^libdir/s|= .*|= /usr/lib/x86_64-linux-gnu|g' -i programs/Makefile
 sleep 1
-make V=1 all prefix=/usr libdir=/usr/lib/x86_64-linux-gnu
+make V=1 prefix=/usr libdir=/usr/lib/x86_64-linux-gnu
 rm -fr /tmp/zstd
 rm -fr /tmp/zstd*.tar*
 make install DESTDIR=/tmp/zstd
