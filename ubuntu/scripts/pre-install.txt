@@ -47,6 +47,12 @@ apt install -y libseccomp-dev libcap-dev
 # build libfido2
 apt install -y libcbor-dev libpcsclite-dev
 
+apt install -y daemon procps psmisc net-tools chrpath libtasn1-6-dev gettext
+apt install -y libnftables-dev nftables || : 
+apt install -y libipset-dev ipset || : 
+apt install -y iptables || : 
+apt install -y libsnmp-dev libmnl-dev libnftnl-dev libnl-3-dev libnl-genl-3-dev libnfnetlink-dev || : 
+
 # install gcc 10
 apt install -y gcc-10 g++-10 libstdc++-10-dev cpp-10
 #apt install -y gcc-10-multilib g++-10-multilib
@@ -71,6 +77,7 @@ ln -svf gcov-tool-10 /usr/bin/x86_64-linux-gnu-gcov-tool
 
 apt upgrade -y
 /sbin/ldconfig
+[[ -e /etc/ssl/cert.pem ]] || ln -svf certs/ca-certificates.crt /etc/ssl/cert.pem
 
 exit
 
