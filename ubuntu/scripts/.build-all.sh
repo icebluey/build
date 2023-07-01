@@ -27,7 +27,7 @@ sleep 1
 bash build-ssl-1.1.1.sh
 rm -fr /usr/local/openssl-1.1.1
 sleep 2
-tar -xf /tmp/openssl_*_amd64.tar.xz -C /
+tar -xof /tmp/openssl_*_amd64.tar.xz -C /
 bash /usr/local/openssl-1.1.1/.install.txt
 /sbin/ldconfig
 mkdir /tmp/.tar.tmp
@@ -56,13 +56,6 @@ bash build-gpg.sh
 mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
 
 bash build-openssh.sh
-mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
-
-#bash build-haproxy.sh
-#bash build-haproxy-quic-ub2004.sh
-#mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
-
-bash build-keepalived.sh
 mv -f /tmp/*_amd64.tar.xz* /tmp/.tar.tmp/
 
 bash build-chrony.sh
@@ -101,8 +94,20 @@ systemctl stop sshd-keygen.service >/dev/null 2>&1 || :
 systemctl stop ssh-agent.service >/dev/null 2>&1 || : 
 systemctl stop chrony >/dev/null 2>&1 || : 
 systemctl disable chrony >/dev/null 2>&1 || : 
-systemctl stop nginx.service v2ray.service dnscrypt-proxy.service sshd.service chronyd.service
-systemctl disable nginx.service v2ray.service dnscrypt-proxy.service sshd.service chronyd.service
+systemctl stop nginx.service || : 
+systemctl stop v2ray.service || : 
+systemctl stop dnscrypt-proxy.service || : 
+systemctl stop sshd.service || : 
+systemctl stop ssh.service || : 
+systemctl stop chronyd.service || : 
+systemctl stop chrony.service || : 
+systemctl disable nginx.service || : 
+systemctl disable v2ray.service || : 
+systemctl disable dnscrypt-proxy.service || : 
+systemctl disable sshd.service || : 
+systemctl disable ssh.service || : 
+systemctl disable chronyd.service || : 
+systemctl disable chrony.service || : 
 sleep 1
 rm -fr /etc/ssh /etc/dnscrypt-proxy /usr/local/openssl-1.1.1 /etc/gnupg /etc/chrony
 rm -fr /usr/lib/x86_64-linux-gnu/chrony /var/lib/chrony
@@ -119,8 +124,18 @@ bash /etc/gnupg/.install.txt
 bash /etc/chrony/.install.txt
 systemctl stop systemd-timesyncd >/dev/null 2>&1
 systemctl disable systemd-timesyncd >/dev/null 2>&1
-systemctl disable nginx.service v2ray.service dnscrypt-proxy.service sshd.service chronyd.service
-systemctl enable nginx.service v2ray.service dnscrypt-proxy.service sshd.service chronyd.service
+systemctl disable nginx.service || : 
+systemctl disable v2ray.service || : 
+systemctl disable dnscrypt-proxy.service || : 
+systemctl disable sshd.service || : 
+systemctl disable ssh.service || : 
+systemctl disable chronyd.service || : 
+systemctl disable chrony.service || : 
+systemctl enable nginx.service || : 
+systemctl enable v2ray.service || : 
+systemctl enable dnscrypt-proxy.service || : 
+systemctl enable sshd.service || : 
+systemctl enable chronyd.service || : 
 systemctl start dnscrypt-proxy.service
 sleep 5 ; systemctl start chronyd.service
 
